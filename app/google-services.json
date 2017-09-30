@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "817198859470",
+    "firebase_url": "https://aptitude-quiz.firebaseio.com",
+    "project_id": "aptitude-quiz",
+    "storage_bucket": "aptitude-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817198859470:android:9546414fd9eaf785",
+        "android_client_info": {
+          "package_name": "app.aptitude.quiz.craftystudio.aptitudequiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817198859470-dl8af814p7af1a5tfkinb9uatvaf8iqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.aptitude.quiz.craftystudio.aptitudequiz",
+            "certificate_hash": "fe7f2c046d0ee72ba663224bdde17430bfd725e1"
+          }
+        },
+        {
+          "client_id": "817198859470-jrnudt8b6k4ftojfn2dapi8junh2ng78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmTD30RWCwZEqhWSco9ZvmMC5MS0-CcGU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817198859470-jrnudt8b6k4ftojfn2dapi8junh2ng78.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

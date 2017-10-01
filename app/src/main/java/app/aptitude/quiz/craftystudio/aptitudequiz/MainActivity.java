@@ -90,9 +90,7 @@ public class MainActivity extends AppCompatActivity
                     for (Questions question : questionList) {
                         MainActivity.this.mQuestionsList.add(question);
                         int r = question.getRandomNumber();
-
-                        Toast.makeText(MainActivity.this, r + "", Toast.LENGTH_SHORT).show();
-                    }
+  }
 
                     // initializeNativeAds();
                     mPagerAdapter.notifyDataSetChanged();

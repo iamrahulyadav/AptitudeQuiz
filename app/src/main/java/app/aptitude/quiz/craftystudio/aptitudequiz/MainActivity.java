@@ -1,5 +1,6 @@
 package app.aptitude.quiz.craftystudio.aptitudequiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -35,6 +36,10 @@ public class MainActivity extends AppCompatActivity
     private PagerAdapter mPagerAdapter;
     ArrayList<Questions> mQuestionsList = new ArrayList<>();
 
+    int check;
+    String topicName, testName;
+
+    boolean isMoreQuestionAvailable = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,49 +71,62 @@ public class MainActivity extends AppCompatActivity
 
         mPager = (ViewPager) findViewById(R.id.mainActivity_viewpager);
 
-
-        downloadStoryList();
-
         initializeViewPager();
+
+        check = getIntent().getExtras().getInt("check");
+
+        if (check == 0) {
+
+            //if check == 0 get questions by topic name
+            topicName = getIntent().getExtras().getString("Topic");
+            String questionUID = getIntent().getExtras().getString("questionUID");
+
+            if (questionUID != null) {
+
+                downloadQuestion(questionUID);
+            }
+            downloadQuestionByTopic(topicName);
+            Toast.makeText(this, "In Topic", Toast.LENGTH_SHORT).show();
+
+        } else if (check == 1) {
+
+            //check==1 get question by test name
+            testName = getIntent().getExtras().getString("Topic");
+            downloadQuestionByTestName(testName);
+            Toast.makeText(this, "In Test", Toast.LENGTH_SHORT).show();
+        }
 
 
     }
 
-    public void downloadStoryList() {
+
+    public void downloadQuestion(String questionUID) {
 
         fireBaseHandler = new FireBaseHandler();
-        fireBaseHandler.downloadQuestionList(5, new FireBaseHandler.OnQuestionlistener() {
+        fireBaseHandler.downloadQuestion(questionUID, new FireBaseHandler.OnQuestionlistener() {
             @Override
             public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
+                if (isSuccessful) {
+                    mQuestionsList.add(0, questions);
+                    initializeViewPager();
+                    mPagerAdapter.notifyDataSetChanged();
 
+                }
             }
 
             @Override
             public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
-                if (isSuccessful) {
 
-                    for (Questions question : questionList) {
-                        MainActivity.this.mQuestionsList.add(question);
-                        int r = question.getRandomNumber();
-  }
-
-                    // initializeNativeAds();
-                    mPagerAdapter.notifyDataSetChanged();
-
-                } else {
-                    //  openConnectionFailureDialog();
-                }
             }
 
             @Override
             public void onQuestionUpload(boolean isSuccessful) {
 
             }
-
         });
     }
 
-    public void downloadMoreStoryList() {
+    public void downloadMoreRandomQuestionList() {
         fireBaseHandler.downloadQuestionList(5, mQuestionsList.get(mQuestionsList.size() - 1).getRandomNumber() + 1, new FireBaseHandler.OnQuestionlistener() {
             @Override
             public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
@@ -141,37 +159,54 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void uploadQuestion() {
-        Questions questions = new Questions();
-        questions.setQuestionName("What least number must be subtracted from 12702 to get number exactly 99 ?");
-        questions.setCorrectAnswer("30");
-        questions.setOptionA("21");
-        questions.setOptionB("30");
-        questions.setOptionC("25");
-        questions.setOptionD("29");
-        questions.setPreviousYearsName("TCS 2015 &2017");
-        questions.setQuestionTopicName("Number Basic");
-        questions.setQuestionTestName("TCS 2015");
-        questions.setQuestionExplaination("Divide the given number by 99 and find the remainder.  If you subtract the remainder from the given number then it is exactly divisible by 99.\n" +
-                "99)  12702 (128\n" +
-                "         99  \n" +
-                "         280\n" +
-                "         198\n" +
-                "           822\n" +
-                "           792\n" +
-                "             30\n" +
-                "Required number is 30.");
+    public void downloadMoreQuestionList() {
 
-        //random no generate
-        final int min = 1;
-        final int max = 1000;
-        Random random = new Random();
-        final int r = random.nextInt((max - min) + 1) + min;
+        if (check == 0) {
+            fireBaseHandler.downloadMoreQuestionsList(topicName, 5, mQuestionsList.get(mQuestionsList.size() - 1).getQuestionUID(), new FireBaseHandler.OnQuestionlistener() {
+                @Override
+                public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
 
-        questions.setRandomNumber(r);
+                }
 
+                @Override
+                public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
+                    if (isSuccessful) {
+
+                        for (Questions question : questionList) {
+
+                            if (topicName.equalsIgnoreCase(question.getQuestionTopicName())) {
+                                MainActivity.this.mQuestionsList.add(question);
+
+                            } else {
+                                isMoreQuestionAvailable = false;
+                            }
+                        }
+
+                        //initializeNativeAds();
+                        mPagerAdapter.notifyDataSetChanged();
+
+                    } else {
+                        // openConnectionFailureDialog();
+                    }
+                }
+
+                @Override
+                public void onQuestionUpload(boolean isSuccessful) {
+
+                }
+            });
+
+        } else {
+
+        }
+
+
+    }
+
+    /* Download questions according to TOPIC name*/
+    public void downloadQuestionByTopic(String topic) {
         fireBaseHandler = new FireBaseHandler();
-        fireBaseHandler.uploadQuestion(questions, new FireBaseHandler.OnQuestionlistener() {
+        fireBaseHandler.downloadQuestionList(topic, 8, new FireBaseHandler.OnQuestionlistener() {
             @Override
             public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
 
@@ -180,17 +215,61 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
 
+                if (isSuccessful) {
+
+                    for (Questions questions : questionList) {
+                        mQuestionsList.add(questions);
+                    }
+                    initializeViewPager();
+
+                    mPagerAdapter.notifyDataSetChanged();
+                }
+
             }
 
             @Override
             public void onQuestionUpload(boolean isSuccessful) {
 
-                if (isSuccessful) {
-                    Toast.makeText(MainActivity.this, "Question Uploaded", Toast.LENGTH_SHORT).show();
-                }
             }
         });
+
     }
+
+
+    /* Download questions according to TEST name*/
+    public void downloadQuestionByTestName(String testName) {
+        fireBaseHandler = new FireBaseHandler();
+
+        isMoreQuestionAvailable = false;
+        fireBaseHandler.downloadQuestionList(30, testName, new FireBaseHandler.OnQuestionlistener() {
+            @Override
+            public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
+
+            }
+
+            @Override
+            public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
+
+                if (isSuccessful) {
+
+                    for (Questions questions : questionList) {
+                        mQuestionsList.add(questions);
+                    }
+                    initializeViewPager();
+
+                    mPagerAdapter.notifyDataSetChanged();
+                }
+
+            }
+
+            @Override
+            public void onQuestionUpload(boolean isSuccessful) {
+
+            }
+        });
+
+    }
+
 
     private void initializeViewPager() {
 
@@ -234,10 +313,14 @@ public class MainActivity extends AppCompatActivity
             //  adsCount++;
             //getting more stories
             if (position == mQuestionsList.size() - 2) {
-                downloadMoreStoryList();
+
+                if (isMoreQuestionAvailable) {
+                    downloadMoreQuestionList();
+
+                }
             }
 
-            return AptitudeFragment.newInstance(mQuestionsList.get(position), MainActivity.this);
+            return AptitudeFragment.newInstance(mQuestionsList.get(position), MainActivity.this, false);
         }
 
         @Override
@@ -313,7 +396,14 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
+            Intent intent = new Intent(MainActivity.this, TopicActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_slideshow) {
+
+            Intent intent = new Intent(MainActivity.this, RandomTestActivity.class);
+            startActivity(intent);
+
 
         } else if (id == R.id.nav_manage) {
 
@@ -327,4 +417,58 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void uploadQuestion() {
+        Questions questions = new Questions();
+        questions.setQuestionName("What least number must be subtracted from 12702 to get number exactly 99 ?");
+        questions.setCorrectAnswer("30");
+        questions.setOptionA("21");
+        questions.setOptionB("30");
+        questions.setOptionC("25");
+        questions.setOptionD("29");
+        questions.setPreviousYearsName("TCS 2015 &2017");
+        questions.setQuestionTopicName("Number Basic");
+        questions.setQuestionTestName("TCS 2015");
+        questions.setQuestionExplaination("Divide the given number by 99 and find the remainder.  If you subtract the remainder from the given number then it is exactly divisible by 99.\n" +
+                "99)  12702 (128\n" +
+                "         99  \n" +
+                "         280\n" +
+                "         198\n" +
+                "           822\n" +
+                "           792\n" +
+                "             30\n" +
+                "Required number is 30.");
+
+        //random no generate
+        final int min = 1;
+        final int max = 1000;
+        Random random = new Random();
+        final int r = random.nextInt((max - min) + 1) + min;
+
+        questions.setRandomNumber(r);
+
+        fireBaseHandler = new FireBaseHandler();
+        fireBaseHandler.uploadQuestion(questions, new FireBaseHandler.OnQuestionlistener() {
+            @Override
+            public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
+
+            }
+
+            @Override
+            public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
+
+            }
+
+            @Override
+            public void onQuestionUpload(boolean isSuccessful) {
+
+                if (isSuccessful) {
+                    Toast.makeText(MainActivity.this, "Question Uploaded", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 }
+
+

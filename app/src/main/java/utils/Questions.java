@@ -29,6 +29,16 @@ public class Questions implements Serializable {
     private String questionTestName;
     private String previousYearsName;
 
+    public String getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(String userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    private String userAnswer =null;
+
     public String getQuestionUID() {
         return questionUID;
     }

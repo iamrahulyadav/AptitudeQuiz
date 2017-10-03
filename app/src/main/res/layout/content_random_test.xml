@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_random_test"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="4dp"
+    android:orientation="vertical"
+    android:weightSum="1"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="app.aptitude.quiz.craftystudio.aptitudequiz.RandomTestActivity"
+    tools:showIn="@layout/activity_random_test">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/random_test_activity_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/colorWhiteBg"
+        android:visibility="visible"></android.support.v4.view.ViewPager>
+
+
+    <Button
+        android:id="@+id/fragmentAptitudeQuiz_Submit_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Submit" />
+
+    <TextView
+        android:id="@+id/randomactivity_countdown_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hello"
+        android:textSize="20sp" />
+
+</LinearLayout>

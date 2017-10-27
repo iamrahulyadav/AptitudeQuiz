@@ -97,6 +97,7 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottombar_test_refresh:
+                        
                         onRefreshTest();
                         break;
                     case R.id.bottombar_test_explaination:

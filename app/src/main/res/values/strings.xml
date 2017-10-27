@@ -5,9 +5,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_topic">TopicActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="title_activity_random_test">RandomTestActivity</string>
+    <string name="title_activity_topic">Aptitude Questions</string>
+    <string name="title_dashboard">Topic</string>
+    <string name="title_notifications">Test</string>
+    <string name="title_activity_random_test">Aptitude Test</string>
 </resources>

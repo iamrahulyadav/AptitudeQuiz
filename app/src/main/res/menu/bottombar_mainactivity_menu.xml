@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottombar_main_explaination"
+        android:icon="@drawable/g3"
+        android:title="Explaination" />
+
+    <item
+        android:id="@+id/bottombar_main_share"
+        android:icon="@drawable/g1"
+        android:title="Share" />
+
+
+</menu>

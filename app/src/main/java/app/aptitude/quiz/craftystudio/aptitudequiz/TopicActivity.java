@@ -1,11 +1,17 @@
 package app.aptitude.quiz.craftystudio.aptitudequiz;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,63 +29,53 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import java.util.ArrayList;
 
 import utils.AppRater;
+import utils.ClickListener;
 import utils.FireBaseHandler;
+import utils.TopicListAdapter;
 
-public class TopicActivity extends AppCompatActivity {
+public class TopicActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView mTextMessage;
     FireBaseHandler fireBaseHandler;
 
     ArrayList<String> mArraylist;
     ListView topicAndTestListview;
-    ArrayAdapter adapter;
+    TopicListAdapter adapter;
 
+    Toolbar toolbar;
     int check;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_topic);
+        setContentView(R.layout.activity_navigation_topic);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar_topic);
+        setSupportActionBar(toolbar);
 
         fireBaseHandler = new FireBaseHandler();
-
-
         openDynamicLink();
     }
 
 
     public void initializeActivity() {
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_topiclist_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_topiclist_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
         mArraylist = new ArrayList<>();
-
-
         topicAndTestListview = (ListView) findViewById(R.id.topicActivity_topic_listview);
-
-        topicAndTestListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                TextView textview = (TextView) view;
-
-                if (check == 0) {
-
-                    openMainActivity(0, textview.getText().toString(), null);
-                    Toast.makeText(TopicActivity.this, "In Topic " + " Selected " + textview.getText().toString() + " Postion is " + i, Toast.LENGTH_SHORT).show();
-
-
-                } else if (check == 1) {
-                    openMainActivity(1, textview.getText().toString(), null);
-                    Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + i, Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-        });
 
 
         //calling rate now dialog
@@ -88,7 +84,21 @@ public class TopicActivity extends AppCompatActivity {
 
 
         //download list of Topics
+        showDialog("Loading...Please wait");
         downloadTopicList();
+
+
+    }
+
+    public void itemClick(String item, int position) {
+        if (check == 0) {
+
+            openMainActivity(0, item, null);
+            Toast.makeText(TopicActivity.this, "In Topic " + " Selected " + item + " Postion is " + position, Toast.LENGTH_SHORT).show();
+
+
+        }
+
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -97,11 +107,11 @@ public class TopicActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_dashboard:
+                case R.id.navigation_topic:
                     downloadTopicList();
                     return true;
 
-                case R.id.navigation_notifications:
+                case R.id.navigation_test_Series:
                     downloadTestList();
                     return true;
             }
@@ -110,10 +120,21 @@ public class TopicActivity extends AppCompatActivity {
 
     };
 
+    public void showDialog(String message) {
+        progressDialog = new ProgressDialog(TopicActivity.this);
+        progressDialog.setMessage(message);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    public void hideDialog() {
+        progressDialog.cancel();
+    }
+
     private void downloadTopicList() {
         FireBaseHandler fireBaseHandler = new FireBaseHandler();
 
-        fireBaseHandler.downloadTopicList(20, new FireBaseHandler.OnTopiclistener() {
+        fireBaseHandler.downloadTopicList(30, new FireBaseHandler.OnTopiclistener() {
             @Override
             public void onTopicDownLoad(String topic, boolean isSuccessful) {
 
@@ -123,17 +144,41 @@ public class TopicActivity extends AppCompatActivity {
             public void onTopicListDownLoad(ArrayList<String> topicList, boolean isSuccessful) {
 
                 if (isSuccessful) {
-                    Toast.makeText(TopicActivity.this, "size is " + topicList.size(), Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(TopicActivity.this, "size is " + topicList.size(), Toast.LENGTH_SHORT).show();
 
                     mArraylist = topicList;
-
-                    adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_textview, mArraylist);
-
-                    topicAndTestListview.setAdapter(adapter);
-
                     check = 0;
 
+
+                    adapter = new TopicListAdapter(getApplicationContext(), R.layout.custom_textview, mArraylist);
+
+                    adapter.setOnItemCLickListener(new ClickListener() {
+                        @Override
+                        public void onItemCLickListener(View view, int position) {
+                            TextView textview = (TextView) view;
+
+                            if (check == 0) {
+
+                                openMainActivity(0, textview.getText().toString(), null);
+                              //  Toast.makeText(TopicActivity.this, " Selected " + textview.getText().toString(), Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }
+                    });
+
+                    topicAndTestListview.post(new Runnable() {
+                        public void run() {
+                            topicAndTestListview.setAdapter(adapter);
+                        }
+                    });
+
+
+                    hideDialog();
+
                 }
+                hideDialog();
+
             }
 
             @Override
@@ -141,6 +186,7 @@ public class TopicActivity extends AppCompatActivity {
 
             }
         });
+
 
     }
 
@@ -176,7 +222,7 @@ public class TopicActivity extends AppCompatActivity {
             @Override
             public void onTestDownLoad(String test, boolean isSuccessful) {
                 if (isSuccessful) {
-                    Toast.makeText(TopicActivity.this, "Test Name is " + test, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(TopicActivity.this, "Test Name is " + test, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -194,7 +240,7 @@ public class TopicActivity extends AppCompatActivity {
 
 
     public void downloadTestList() {
-        fireBaseHandler.downloadTestList(20, new FireBaseHandler.OnTestSerieslistener() {
+        fireBaseHandler.downloadTestList(30, new FireBaseHandler.OnTestSerieslistener() {
             @Override
             public void onTestDownLoad(String test, boolean isSuccessful) {
 
@@ -204,14 +250,36 @@ public class TopicActivity extends AppCompatActivity {
             public void onTestListDownLoad(ArrayList<String> testList, boolean isSuccessful) {
 
                 if (isSuccessful) {
-                    Toast.makeText(TopicActivity.this, "size is " + testList.size(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(TopicActivity.this, "size is " + testList.size(), Toast.LENGTH_SHORT).show();
                     mArraylist = testList;
-
-                    adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.custom_textview, mArraylist);
-                    topicAndTestListview.setAdapter(adapter);
-
                     check = 1;
+                    adapter = new TopicListAdapter(getApplicationContext(), R.layout.custom_textview, mArraylist);
+
+                    adapter.setOnItemCLickListener(new ClickListener() {
+                        @Override
+                        public void onItemCLickListener(View view, int position) {
+                            TextView textview = (TextView) view;
+                            if (check == 1) {
+                                openMainActivity(1, textview.getText().toString(), null);
+                                //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    });
+
+
+                    topicAndTestListview.post(new Runnable() {
+                        public void run() {
+                            topicAndTestListview.setAdapter(adapter);
+                        }
+                    });
+
+
+                    hideDialog();
+
                 }
+                hideDialog();
+
             }
 
             @Override
@@ -312,4 +380,84 @@ public class TopicActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_test) {
+            Intent intent = new Intent(TopicActivity.this, RandomTestActivity.class);
+            startActivity(intent);
+
+            // Handle the camera action
+        } else if (id == R.id.nav_suggest) {
+
+            giveSuggestion();
+        } else if (id == R.id.nav_share) {
+
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+
+            //sharingIntent.putExtra(Intent.EXTRA_STREAM, newsMetaInfo.getNewsImageLocalPath());
+
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
+                    " " + "\n\n https://goo.gl/Q7sjZi " + "\n Aptitude Quiz app \n Download App Now");
+            startActivity(Intent.createChooser(sharingIntent, "Share Aptitude App via"));
+
+
+        } else if (id == R.id.nav_rate) {
+            onRateUs();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_topiclist_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+
+    }
+
+    private void giveSuggestion() {
+
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"acraftystudio@gmail.com"});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Suggestion For " + getResources().getString(R.string.app_name));
+        emailIntent.setType("text/plain");
+
+        startActivity(Intent.createChooser(emailIntent, "Send mail From..."));
+
+    }
+
+    private void onRateUs() {
+        try {
+            String link = "https://goo.gl/Q7sjZi";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void openRandomTestActivity(View view) {
+
+        Intent intent = new Intent(TopicActivity.this, RandomTestActivity.class);
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_topiclist_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onResume();
+        //showDialog("Loading.. Please Wait");
+      //  downloadTopicList();
+
+        initializeActivity();
+    }
 }

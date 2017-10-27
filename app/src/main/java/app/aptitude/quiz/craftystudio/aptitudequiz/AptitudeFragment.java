@@ -4,15 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +51,11 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
     TextView optionB;
     TextView optionC;
     TextView optionD;
+
+    LinearLayout optionACardView;
+    LinearLayout optionBCardView;
+    LinearLayout optionCCardView;
+    LinearLayout optionDCardView;
 
 
     public static AptitudeFragment newInstance(Questions questions, Context context, boolean randomTestOn) {
@@ -86,43 +97,33 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         //initializeView
 
         TextView questionName = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_QuestionName_Textview);
-        TextView questionExplaination = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_explaination_Textview);
         optionA = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_optionA_Textview);
         optionB = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_optionB_Textview);
         optionC = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_optionC_Textview);
         optionD = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_optionD_Textview);
-        TextView questionTopicName = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_topicName_Textview);
         TextView previousYearQuestions = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_previousYearName_Textview);
-        TextView randomNumber = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_randomNumber_Textview);
-
-        Button shareQuestionButton = (Button) view.findViewById(R.id.fragmentAptitudeQuiz_share_button);
-
-        shareQuestionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onShareClick();
-            }
-        });
+        //   TextView randomNumber = (TextView) view.findViewById(R.id.fragmentAptitudeQuiz_randomNumber_Textview);
 
 
-        questionName.setText("Q. " + questions.getQuestionName());
-        optionA.setText(questions.getOptionA() + "");
-        optionB.setText(questions.getOptionB() + "");
-        optionC.setText(questions.getOptionC() + "");
-        optionD.setText(questions.getOptionD() + "");
-        randomNumber.setText(questions.getRandomNumber() + "");
-        questionTopicName.setText(questions.getQuestionTopicName());
+        optionACardView = (LinearLayout) view.findViewById(R.id.fragmentAptitudeQuiz_optionA_Cardview);
+        optionBCardView = (LinearLayout) view.findViewById(R.id.fragmentAptitudeQuiz_optionB_Cardview);
+        optionCCardView = (LinearLayout) view.findViewById(R.id.fragmentAptitudeQuiz_optionC_Cardview);
+        optionDCardView = (LinearLayout) view.findViewById(R.id.fragmentAptitudeQuiz_optionD_Cardview);
+
+
+        questionName.setText("Q. " + questions.getQuestionName() + " ");
+        optionA.setText(questions.getOptionA());
+        optionB.setText(questions.getOptionB());
+        optionC.setText(questions.getOptionC());
+        optionD.setText(questions.getOptionD());
+        //   randomNumber.setText(questions.getRandomNumber() + "");
         previousYearQuestions.setText(questions.getPreviousYearsName());
 
-        if (RandomTestActivity.isRandomTestQuestions) {
-            questionExplaination.setText("Complete the test first");
-        } else {
-            questionExplaination.setText(questions.getQuestionExplaination());
-        }
-        optionA.setOnClickListener(this);
-        optionB.setOnClickListener(this);
-        optionC.setOnClickListener(this);
-        optionD.setOnClickListener(this);
+
+        optionACardView.setOnClickListener(this);
+        optionBCardView.setOnClickListener(this);
+        optionCCardView.setOnClickListener(this);
+        optionDCardView.setOnClickListener(this);
 
 
         getUserAnswers();
@@ -136,16 +137,16 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         String correctANswer = questions.getCorrectAnswer();
 
         if (optionA.getText().toString().equalsIgnoreCase(correctANswer)) {
-            optionA.setTextColor(Color.GREEN);
+            optionACardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
         } else if (optionB.getText().toString().equalsIgnoreCase(correctANswer)) {
-            optionB.setTextColor(Color.GREEN);
+            optionBCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
         } else if (optionC.getText().toString().equalsIgnoreCase(correctANswer)) {
-            optionC.setTextColor(Color.GREEN);
+            optionCCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
         } else if (optionD.getText().toString().equalsIgnoreCase(correctANswer)) {
-            optionD.setTextColor(Color.GREEN);
+            optionDCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
         }
     }
 
@@ -166,7 +167,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
     public void showDialog() {
         progressDialog = new ProgressDialog(mainActivity);
         progressDialog.setMessage("Please wait..Creating link");
-        progressDialog.setCancelable(true);
+        progressDialog.setCancelable(false);
         progressDialog.show();
     }
 
@@ -180,126 +181,156 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         //normal topic questions and normal test series
         if (!RandomTestActivity.isRandomTestQuestions) {
 
-            TextView textview = (TextView) view;
-            if (textview.getText().toString().equalsIgnoreCase(questions.getCorrectAnswer())) {
-                Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
-                textview.setTextColor(Color.GREEN);
+            switch (view.getId()) {
 
-            } else {
-                Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
-                textview.setTextColor(Color.RED);
-                getRightAnswer();
+                case R.id.fragmentAptitudeQuiz_optionA_Cardview:
+                    if (questions.getOptionA().equalsIgnoreCase(questions.getCorrectAnswer())) {
+                        Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
+                        optionACardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+
+
+                    } else {
+                        // Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
+                        optionACardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        getRightAnswer();
+                    }
+                    break;
+
+                case R.id.fragmentAptitudeQuiz_optionB_Cardview:
+                    if (questions.getOptionB().equalsIgnoreCase(questions.getCorrectAnswer())) {
+                        Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
+                        optionBCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+
+                    } else {
+                        // Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
+                        optionBCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        getRightAnswer();
+                    }
+                    break;
+                case R.id.fragmentAptitudeQuiz_optionC_Cardview:
+                    if (questions.getOptionC().equalsIgnoreCase(questions.getCorrectAnswer())) {
+                        Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
+                        optionCCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+
+                    } else {
+                        //  Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
+                        optionCCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        getRightAnswer();
+                    }
+                    break;
+                case R.id.fragmentAptitudeQuiz_optionD_Cardview:
+                    if (questions.getOptionD().equalsIgnoreCase(questions.getCorrectAnswer())) {
+                        Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
+                        optionDCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+
+                    } else {
+                        // Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
+                        optionDCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        getRightAnswer();
+                    }
+                    break;
+                case R.id.fragmentAptitudeQuiz_topicName_Textview:
+                    //open TOPIC ACTIVITY
+                    Intent intent = new Intent(mainActivity, TopicActivity.class);
+                    startActivity(intent);
+                    break;
             }
 
         } else {
-            TextView textview = (TextView) view;
-            textview.setTextColor(Color.MAGENTA);
-            questions.setUserAnswer(textview.getText().toString());
+
+            optionACardView.setBackgroundResource(R.drawable.mybutton);
+            optionBCardView.setBackgroundResource(R.drawable.mybutton);
+            optionCCardView.setBackgroundResource(R.drawable.mybutton);
+            optionDCardView.setBackgroundResource(R.drawable.mybutton);
+
+            LinearLayout linearLayout = (LinearLayout) view;
+            linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+
+            switch (view.getId()) {
+
+                case R.id.fragmentAptitudeQuiz_optionA_Cardview:
+                    questions.setUserAnswer(questions.getOptionA());
+                    break;
+                case R.id.fragmentAptitudeQuiz_optionB_Cardview:
+                    questions.setUserAnswer(questions.getOptionB());
+                    break;
+                case R.id.fragmentAptitudeQuiz_optionC_Cardview:
+                    questions.setUserAnswer(questions.getOptionC());
+                    break;
+                case R.id.fragmentAptitudeQuiz_optionD_Cardview:
+                    questions.setUserAnswer(questions.getOptionD());
+                    break;
+
+
+            }
         }
 
     }
 
     private void getUserAnswers() {
 
-        if (questions.getUserAnswer() != null) {
+        if (!RandomTestActivity.isRandomTestQuestions) {
 
 
-            if (questions.getUserAnswer().equalsIgnoreCase(questions.getCorrectAnswer())) {
-                if (optionA.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionA.setTextColor(Color.GREEN);
-
-                } else if (optionB.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionB.setTextColor(Color.GREEN);
+            if (questions.getUserAnswer() != null) {
 
 
-                } else if (optionC.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionC.setTextColor(Color.GREEN);
+                if (questions.getUserAnswer().equalsIgnoreCase(questions.getCorrectAnswer())) {
+                    if (optionA.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionACardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
-                } else if (optionD.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionD.setTextColor(Color.GREEN);
+                    } else if (optionB.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionBCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+
+
+                    } else if (optionC.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionCCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+
+                    } else if (optionD.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionDCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+
+                    }
+
+                } else {
+                    if (optionA.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionACardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+
+                    } else if (optionB.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionBCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+
+
+                    } else if (optionC.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionCCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+
+                    } else if (optionD.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                        optionDCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+
+                    }
+
 
                 }
 
-            } else {
+            }
+        }else {
+            if (questions.getUserAnswer() != null) {
+
                 if (optionA.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionA.setTextColor(Color.RED);
+                    optionACardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
                 } else if (optionB.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionB.setTextColor(Color.RED);
+                    optionBCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
 
                 } else if (optionC.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionC.setTextColor(Color.RED);
+                    optionCCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
                 } else if (optionD.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
-                    optionD.setTextColor(Color.RED);
+                    optionDCardView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
                 }
+
             }
         }
-
-    }
-
-    private void onShareClick() {
-        showDialog();
-        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://goo.gl/Q7sjZi?questionID=" + questions.getQuestionUID() + "&questionTopic=" + questions.getQuestionTopicName()))
-                .setDynamicLinkDomain("a9adz.app.goo.gl")
-                .setAndroidParameters(
-                        new DynamicLink.AndroidParameters.Builder("app.aptitude.quiz.craftystudio.aptitudequiz")
-                                .build())
-                .setSocialMetaTagParameters(
-                        new DynamicLink.SocialMetaTagParameters.Builder()
-                                .setTitle(questions.getQuestionName())
-                                .setDescription(questions.getQuestionTopicName())
-                                .build())
-                .setGoogleAnalyticsParameters(
-                        new DynamicLink.GoogleAnalyticsParameters.Builder()
-                                .setSource("share")
-                                .setMedium("social")
-                                .setCampaign("example-promo")
-                                .build())
-                .buildShortDynamicLink()
-                .addOnCompleteListener(new OnCompleteListener<ShortDynamicLink>() {
-                    @Override
-                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                        if (task.isSuccessful()) {
-                            Uri shortLink = task.getResult().getShortLink();
-
-                            openShareDialog(shortLink);
-                        }
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-    }
-
-
-    private void openShareDialog(Uri shortUrl) {
-
-        try {
-            /*
-            Answers.getInstance().logCustom(new CustomEvent("Share link created").putCustomAttribute("Content Id", questions.getQuestionUID())
-                    .putCustomAttribute("Shares", questions.getQuestionTopicName()));
-            */
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-
-        //sharingIntent.putExtra(Intent.EXTRA_STREAM, newsMetaInfo.getNewsImageLocalPath());
-
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
-                "\nCan you Solve this question? \n\n " + questions.getQuestionName() + "\n\n" + "1. " + questions.getOptionA()
-                        + "\n2. " + questions.getOptionB() + "\n3. " + questions.getOptionC() + "\n4. " + questions.getOptionD() + "\n\n See the Explaination here\n " + shortUrl);
-        startActivity(Intent.createChooser(sharingIntent, "Share Aptitude Question via"));
-        hideDialog();
 
     }
 

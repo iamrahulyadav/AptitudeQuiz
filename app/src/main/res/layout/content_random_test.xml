@@ -1,38 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_random_test"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="4dp"
-    android:orientation="vertical"
-    android:weightSum="1"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="app.aptitude.quiz.craftystudio.aptitudequiz.RandomTestActivity"
     tools:showIn="@layout/activity_random_test">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/random_test_activity_viewpager"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <!--Topic name -->
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+
+                <TextView
+                    android:id="@+id/randomactivity_right_WRONG_answersDIsplay_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="2dp"
+                    android:text="right answers"
+                    android:textColor="@color/colorWhiteBg"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    android:visibility="gone" />
+
+                <!--Topic name textview -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_weight="1"
+                    android:text="Random Test"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorWhiteBg"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/randomactivity_countdown_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="16dp"
+                    android:text="00:00"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorWhiteBg"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/random_test_activity_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorLightWhiteBg"
+            android:visibility="visible"></android.support.v4.view.ViewPager>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/randomactivity_Refresh_Question_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_menu_gallery"
+                android:text="Refresh"
+                android:textColor="@color/colorWhiteBg"
+                android:textStyle="normal"
+                android:visibility="visible" />
+
+
+            <ImageView
+                android:id="@+id/randomactivity_submit_test_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_menu_slideshow"
+                android:textColor="@color/colorWhiteBg"
+                android:textStyle="normal"
+                android:visibility="visible" />
+
+
+            <ImageView
+                android:id="@+id/randomactivity_share_question_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_menu_share"
+                android:text="Share"
+                android:textColor="@color/colorWhiteBg"
+                android:textStyle="normal"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/randomactivity_explaination_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_menu_manage"
+                android:text="Explian"
+                android:textColor="@color/colorWhiteBg"
+                android:textStyle="normal"
+                android:visibility="visible" />
+
+
+        </LinearLayout>
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/randomactivity_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="@color/colorWhiteBg"
+            app:itemTextColor="@color/colorWhiteBg"
+            app:menu="@menu/bottombar_randomtest_menu" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/randomTestactivity_bottomsheet_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/colorWhiteBg"
-        android:visibility="visible"></android.support.v4.view.ViewPager>
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:behavior_hideable="true"
+        app:elevation="4dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
 
-    <Button
-        android:id="@+id/fragmentAptitudeQuiz_Submit_Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Submit" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/randomactivity_countdown_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="hello"
-        android:textSize="20sp" />
+            <TextView
+                android:id="@+id/randomTestactivity_bottomsheet_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="12dp"
+                android:text="Question Explaination Loading.."
+                android:textIsSelectable="true"
+                android:textColor="@color/colorWhiteBg"
+                android:textSize="16sp"
+                android:textStyle="normal" />
 
-</LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

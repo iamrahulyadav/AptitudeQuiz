@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottombar_test_refresh"
+        android:icon="@drawable/g2"
+        android:title="Refresh" />
+
+    <item
+        android:id="@+id/bottombar_test_explaination"
+        android:icon="@drawable/g3"
+        android:title="Solution" />
+
+    <item
+        android:id="@+id/bottombar_test_share"
+        android:icon="@drawable/g1"
+        android:title="Share" />
+
+    <item
+        android:id="@+id/bottombar_test_submit"
+        android:icon="@drawable/g5"
+        android:title="Submit" />
+
+</menu>

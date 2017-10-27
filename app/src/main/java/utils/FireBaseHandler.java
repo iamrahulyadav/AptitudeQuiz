@@ -227,14 +227,14 @@ public class FireBaseHandler {
 
     }
 
+
+    //random no generate
+    final int min = 1;
+    final int max = 100;
+    Random random = new Random();
+    final int r = random.nextInt((max - min) + 1) + min;
+
     public void downloadQuestionList(int limit, final OnQuestionlistener onQuestionlistener) {
-
-
-        //random no generate
-        final int min = 1;
-        final int max = 100;
-        Random random = new Random();
-        final int r = random.nextInt((max - min) + 1) + min;
 
 
         mDatabaseRef = mFirebaseDatabase.getReference().child("Questions/");

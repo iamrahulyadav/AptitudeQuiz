@@ -65,6 +65,8 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         FirebaseMessaging.getInstance().subscribeToTopic("subscribed");
 
+        initializeActivity();
+
     }
 
 
@@ -357,49 +359,15 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
 
 
-                        } else {
-                            Log.d("DeepLink", "onSuccess: ");
-
-                            //download story list
-
-
-                            try {
-                                Intent intent = getIntent();
-                                String questionID = intent.getStringExtra("questionID");
-                                String questionTopicName = intent.getStringExtra("questionTopic");
-                                if (questionID == null) {
-                                    initializeActivity();
-                                } else {
-                                    //download story
-                                    // openMainActivity(0, questionTopicName, questionID);
-                                    try {
-                                        // Answers.getInstance().logCustom(new CustomEvent("Via push notification").putCustomAttribute("Story id", storyID));
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            } catch (Exception e) {
-                                initializeActivity();
-                                e.printStackTrace();
-                            }
-
-
                         }
 
-
-                        // Handle the deep link. For example, open the linked
-                        // content, or apply promotional credit to the user's
-                        // account.
-                        // ...
-
-                        // ...
                     }
                 })
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
-                        initializeActivity();
+                        //initializeActivity();
                         Log.w("DeepLink", "getDynamicLink:onFailure", e);
                     }
                 });

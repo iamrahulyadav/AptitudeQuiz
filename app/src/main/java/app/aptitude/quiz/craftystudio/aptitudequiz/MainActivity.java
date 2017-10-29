@@ -28,6 +28,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity
     ProgressDialog progressDialog;
 
     Questions questions;
+
+    boolean isPushNotification = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +167,7 @@ public class MainActivity extends AppCompatActivity
 
             if (questionUID != null) {
 
-               // showDialog("Loading...Please Wait");
+                // showDialog("Loading...Please Wait");
                 downloadQuestion(questionUID);
             }
             showDialog("Loading...Please Wait");
@@ -191,6 +195,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+
+        isPushNotification = getIntent().getBooleanExtra("pushNotification", false);
 
 
     }
@@ -388,7 +395,6 @@ public class MainActivity extends AppCompatActivity
             public void onQuestionUpload(boolean isSuccessful) {
 
 
-
             }
         });
 
@@ -464,7 +470,23 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }*/
-        super.onBackPressed();
+
+        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        } else {
+
+
+            if (isPushNotification) {
+                Intent intent = new Intent(this, TopicActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+            } else {
+                super.onBackPressed();
+            }
+
+        }
+
 
     }
 
@@ -621,6 +643,13 @@ public class MainActivity extends AppCompatActivity
                         + "\n2. " + questions.getOptionB() + "\n3. " + questions.getOptionC() + "\n4. " + questions.getOptionD() + "\n\n See the Explaination here\n " + shortUrl);
         startActivity(Intent.createChooser(sharingIntent, "Share Aptitude Question via"));
         hideDialog();
+
+        try{
+            Answers.getInstance().logCustom(new CustomEvent("Share question").putCustomAttribute("question",questions.getQuestionName()).putCustomAttribute("question topic",questions.getQuestionTopicName()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 

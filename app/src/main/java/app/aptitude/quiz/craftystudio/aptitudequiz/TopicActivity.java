@@ -21,11 +21,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.messaging.FirebaseMessaging;
 
+import io.fabric.sdk.android.Fabric;
 import java.util.ArrayList;
 
 import utils.AppRater;
@@ -49,6 +54,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_navigation_topic);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_topic);
@@ -56,6 +62,9 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         fireBaseHandler = new FireBaseHandler();
         openDynamicLink();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("subscribed");
+
     }
 
 
@@ -79,8 +88,8 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
 
         //calling rate now dialog
-        AppRater appRater = new AppRater();
-        appRater.app_launched(TopicActivity.this);
+
+        AppRater.app_launched(TopicActivity.this);
 
 
         //download list of Topics
@@ -146,6 +155,8 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                 if (isSuccessful) {
                     //  Toast.makeText(TopicActivity.this, "size is " + topicList.size(), Toast.LENGTH_SHORT).show();
 
+
+
                     mArraylist = topicList;
                     check = 0;
 
@@ -161,6 +172,12 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
                                 openMainActivity(0, textview.getText().toString(), null);
                               //  Toast.makeText(TopicActivity.this, " Selected " + textview.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                                try{
+                                    Answers.getInstance().logCustom(new CustomEvent("Topic open").putCustomAttribute("topic",textview.getText().toString()));
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
 
 
                             }
@@ -187,6 +204,10 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             }
         });
 
+
+    }
+
+    private void initializeTopicList() {
 
     }
 
@@ -263,6 +284,12 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                                 openMainActivity(1, textview.getText().toString(), null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
+                                try{
+                                    Answers.getInstance().logCustom(new CustomEvent("Test series open").putCustomAttribute("test name",textview.getText().toString()));
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
+
                             }
                         }
                     });
@@ -322,14 +349,13 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                             if (questionID != null) {
                                 openMainActivity(0, questionTopicName, questionID);
                                 try {
-                                    // Answers.getInstance().logCustom(new CustomEvent("Via dyanamic link").putCustomAttribute("Story id", questionID));
+                                     Answers.getInstance().logCustom(new CustomEvent("Via dyanamic link").putCustomAttribute("Question id", questionID).putCustomAttribute("question topic",questionTopicName));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
 
 
-                            // downloadNewsArticle(newsArticleID);
 
                         } else {
                             Log.d("DeepLink", "onSuccess: ");
@@ -351,7 +377,6 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    //   Toast.makeText(this, "Story id is = "+storyID, Toast.LENGTH_SHORT).show();
                                 }
                             } catch (Exception e) {
                                 initializeActivity();
@@ -437,7 +462,14 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     public void openRandomTestActivity(View view) {
 
+        try{
+            Answers.getInstance().logCustom(new CustomEvent("Random Test").putCustomAttribute("random test", "test"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         Intent intent = new Intent(TopicActivity.this, RandomTestActivity.class);
+
         startActivity(intent);
 
     }
@@ -454,10 +486,10 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     @Override
     protected void onRestart() {
-        super.onResume();
+        super.onRestart();
         //showDialog("Loading.. Please Wait");
       //  downloadTopicList();
 
-        initializeActivity();
+        //initializeActivity();
     }
 }

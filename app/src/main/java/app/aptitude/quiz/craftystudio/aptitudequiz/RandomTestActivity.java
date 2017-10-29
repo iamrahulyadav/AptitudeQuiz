@@ -34,6 +34,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -246,6 +248,15 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
         mydialog.show();
         // displayRightAnswers.setText("Right = " + rightAnswer + " Wrong = " + wrongAnswer);
         // Toast.makeText(this, "right answers " + rightAnswer + " wrong answers " + wrongAnswer, Toast.LENGTH_SHORT).show();
+
+
+        try{
+            Answers.getInstance().logCustom(new CustomEvent("Test submitted").putCustomAttribute("score",rightAnswer));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
     }
 
     private void initializeViewPager() {
@@ -353,9 +364,11 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-
-        super.onBackPressed();
-
+        if (behavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        } else {
+            super.onBackPressed();
+        }
     }
 
 
@@ -488,6 +501,12 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
                         + "\n2. " + questions.getOptionB() + "\n3. " + questions.getOptionC() + "\n4. " + questions.getOptionD() + "\n\n See the Explaination here\n " + shortUrl);
         startActivity(Intent.createChooser(sharingIntent, "Share Aptitude Question via"));
         hideDialog();
+
+        try{
+            Answers.getInstance().logCustom(new CustomEvent("Share question").putCustomAttribute("question",questions.getQuestionName()).putCustomAttribute("question topic",questions.getQuestionTopicName()));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
     }
 

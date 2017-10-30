@@ -85,7 +85,6 @@
                                 android:layout_marginTop="4dp"
                                 android:lineSpacingExtra=".9sp"
                                 android:text="Title"
-                                android:textAlignment="center"
                                 android:textColor="@color/colorBlack"
                                 android:textIsSelectable="true"
                                 android:textSize="16sp"

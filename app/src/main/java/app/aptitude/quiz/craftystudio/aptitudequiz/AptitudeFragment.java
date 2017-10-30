@@ -111,7 +111,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         optionDCardView = (CardView) view.findViewById(R.id.fragmentAptitudeQuiz_optionD_Cardview);
 
 
-        questionName.setText( "Q."+questions.getQuestionName());
+        questionName.setText( "Q. "+questions.getQuestionName());
         optionA.setText(questions.getOptionA());
         optionB.setText(questions.getOptionB());
         optionC.setText(questions.getOptionC());
@@ -134,18 +134,18 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
 
 
     private void getRightAnswer() {
-        String correctANswer = questions.getCorrectAnswer();
+        String correctANswer = questions.getCorrectAnswer().trim();
 
-        if (optionA.getText().toString().equalsIgnoreCase(correctANswer)) {
+        if (questions.getOptionA().trim().equalsIgnoreCase(correctANswer)) {
             optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
-        } else if (optionB.getText().toString().equalsIgnoreCase(correctANswer)) {
+        } else if (questions.getOptionB().trim().equalsIgnoreCase(correctANswer)) {
             optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
-        } else if (optionC.getText().toString().equalsIgnoreCase(correctANswer)) {
+        } else if (questions.getOptionC().trim().equalsIgnoreCase(correctANswer)) {
             optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
-        } else if (optionD.getText().toString().equalsIgnoreCase(correctANswer)) {
+        } else if (questions.getOptionD().trim().equalsIgnoreCase(correctANswer)) {
             optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
         }
     }
@@ -276,33 +276,33 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
 
 
                 if (questions.getUserAnswer().equalsIgnoreCase(questions.getCorrectAnswer())) {
-                    if (optionA.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    if (questions.getOptionA().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
-                    } else if (optionB.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    } else if (questions.getOptionB().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
 
-                    } else if (optionC.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    } else if (questions.getOptionC().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
-                    } else if (optionD.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    } else if (questions.getOptionD().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
 
                     }
 
                 } else {
-                    if (optionA.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    if (questions.getOptionA().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
 
-                    } else if (optionB.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    } else if (questions.getOptionB().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
 
 
-                    } else if (optionC.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    } else if (questions.getOptionC().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
 
-                    } else if (optionD.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                    } else if (questions.getOptionD().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                         optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
 
                     }
@@ -314,17 +314,17 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         }else {
             if (questions.getUserAnswer() != null) {
 
-                if (optionA.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                if (questions.getOptionA().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                     optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
-                } else if (optionB.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                } else if (questions.getOptionB().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                     optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
 
-                } else if (optionC.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                } else if (questions.getOptionC().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                     optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
-                } else if (optionD.getText().toString().equalsIgnoreCase(questions.getUserAnswer())) {
+                } else if (questions.getOptionD().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
                     optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
 
                 }

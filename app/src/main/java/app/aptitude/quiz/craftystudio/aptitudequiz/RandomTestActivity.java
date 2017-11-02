@@ -180,6 +180,11 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
         if (!isRandomTestQuestions) {
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            try{
+                Answers.getInstance().logCustom(new CustomEvent("Explanation").putCustomAttribute("explain",1));
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         } else {
             Toast.makeText(context, "Complete the Test First", Toast.LENGTH_SHORT).show();
         }

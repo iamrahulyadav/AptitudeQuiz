@@ -22,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -111,7 +114,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         optionDCardView = (CardView) view.findViewById(R.id.fragmentAptitudeQuiz_optionD_Cardview);
 
 
-        questionName.setText( "Q. "+questions.getQuestionName());
+        questionName.setText("Q. " + questions.getQuestionName());
         optionA.setText(questions.getOptionA());
         optionB.setText(questions.getOptionB());
         optionC.setText(questions.getOptionC());
@@ -266,6 +269,12 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
             }
         }
 
+        try {
+            Answers.getInstance().logContentView(new ContentViewEvent().putContentId("question answer"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void getUserAnswers() {
@@ -312,7 +321,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
                 }
 
             }
-        }else {
+        } else {
             if (questions.getUserAnswer() != null) {
 
                 if (questions.getOptionA().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {

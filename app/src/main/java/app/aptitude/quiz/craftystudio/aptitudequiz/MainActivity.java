@@ -210,6 +210,12 @@ public class MainActivity extends AppCompatActivity
 
     public static void showExplaination() {
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        try{
+            Answers.getInstance().logCustom(new CustomEvent("Explanation").putCustomAttribute("explain",1));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void downloadQuestion(String questionUID) {

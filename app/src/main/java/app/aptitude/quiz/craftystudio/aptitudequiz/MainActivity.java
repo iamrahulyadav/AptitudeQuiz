@@ -438,6 +438,11 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void onShareQuestion(View view) {
+        questions = mQuestionsList.get(mPager.getCurrentItem());
+        onShareClick();
+    }
+
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {

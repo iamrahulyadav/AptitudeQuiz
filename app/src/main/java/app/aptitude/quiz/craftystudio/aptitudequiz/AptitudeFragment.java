@@ -53,7 +53,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
     TextView optionA;
     TextView optionB;
     TextView optionC;
-    TextView optionD;
+    TextView optionD, questionExplaination;
 
     CardView optionACardView;
     CardView optionBCardView;
@@ -128,6 +128,8 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         optionCCardView.setOnClickListener(this);
         optionDCardView.setOnClickListener(this);
 
+
+        questionExplaination = (TextView) view.findViewById(R.id.question_explaination_textview);
 
         getUserAnswers();
 
@@ -240,12 +242,16 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
                     break;
             }
 
+            //setExplaination
+            questionExplaination.setText(questions.getQuestionExplaination());
+
+
         } else {
 
-            optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-            optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+            optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
+            optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
+            optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
+            optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
 
             CardView linearLayout = (CardView) view;
             linearLayout.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
@@ -283,6 +289,10 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
 
 
             if (questions.getUserAnswer() != null) {
+
+
+                //setExplaination
+                questionExplaination.setText(questions.getQuestionExplaination());
 
 
                 if (questions.getUserAnswer().equalsIgnoreCase(questions.getCorrectAnswer())) {

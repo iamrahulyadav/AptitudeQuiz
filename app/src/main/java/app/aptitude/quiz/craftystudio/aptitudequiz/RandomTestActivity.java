@@ -74,7 +74,6 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
 
     TextView mCountDownTimer, displayRightAnswers;
-    ImageView mSubmitTest, mShareQuestion, mExplainQuestion, mRefreshTest;
     Questions questions;
 
     @Override
@@ -102,9 +101,7 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
                         
                         onRefreshTest();
                         break;
-                    case R.id.bottombar_test_explaination:
-                        showExplaination(RandomTestActivity.this);
-                        break;
+
                     case R.id.bottombar_test_share:
                         onShareQuestion();
                         break;
@@ -122,16 +119,6 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
         displayRightAnswers = (TextView) findViewById(R.id.randomactivity_right_WRONG_answersDIsplay_textview);
 
 
-        //Options at bottom
-        mRefreshTest = (ImageView) findViewById(R.id.randomactivity_Refresh_Question_imageview);
-        mSubmitTest = (ImageView) findViewById(R.id.randomactivity_submit_test_imageview);
-        mShareQuestion = (ImageView) findViewById(R.id.randomactivity_share_question_imageview);
-        mExplainQuestion = (ImageView) findViewById(R.id.randomactivity_explaination_imageview);
-
-        mRefreshTest.setOnClickListener(this);
-        mSubmitTest.setOnClickListener(this);
-        mShareQuestion.setOnClickListener(this);
-        mExplainQuestion.setOnClickListener(this);
 
 
         //showing EXPLAINATION OF QUESTION USING BOTTOMSHEET
@@ -316,23 +303,6 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.randomactivity_Refresh_Question_imageview:
-                onRefreshTest();
-                break;
-            case R.id.randomactivity_submit_test_imageview:
-                onSubmitTest();
-                break;
-            case R.id.randomactivity_explaination_imageview:
-                showExplaination(RandomTestActivity.this);
-                break;
-            case R.id.randomactivity_share_question_imageview:
-                onShareQuestion();
-                break;
-
-
-        }
 
     }
 

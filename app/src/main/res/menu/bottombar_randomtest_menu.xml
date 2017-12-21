@@ -6,10 +6,6 @@
         android:icon="@drawable/g2"
         android:title="Refresh" />
 
-    <item
-        android:id="@+id/bottombar_test_explaination"
-        android:icon="@drawable/g3"
-        android:title="Solution" />
 
     <item
         android:id="@+id/bottombar_test_share"

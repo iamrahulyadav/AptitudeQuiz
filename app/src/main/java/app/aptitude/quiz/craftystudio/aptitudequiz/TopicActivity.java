@@ -1,7 +1,9 @@
 package app.aptitude.quiz.craftystudio.aptitudequiz;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +13,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +35,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import io.fabric.sdk.android.Fabric;
+
 import java.util.ArrayList;
 
 import utils.AppRater;
@@ -42,7 +47,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     FireBaseHandler fireBaseHandler;
 
-    ArrayList<String> mArraylist;
+    ArrayList<Object> mArraylist = new ArrayList<>();
     ListView topicAndTestListview;
     TopicListAdapter adapter;
 
@@ -68,6 +73,15 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         initializeActivity();
 
     }
+
+    @Override
+    protected void onDestroy() {
+
+        FireBaseHandler.removeListener();
+
+        super.onDestroy();
+    }
+
 
 
     public void initializeActivity() {
@@ -99,6 +113,27 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         downloadTopicList();
 
 
+        setListViewFooter();
+
+    }
+
+    private void setListViewFooter() {
+        View footerView = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+
+        TextView topicNameTextview = (TextView) footerView.findViewById(R.id.custom_textview);
+        topicNameTextview.setText("Logical Reasoning Master");
+        topicNameTextview.setTextColor(Color.parseColor("#FFFFFF"));
+
+        CardView cardView = (CardView) footerView.findViewById(R.id.custom_background_cardView);
+        cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        footerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onLogicalReasoningClick();
+            }
+        });
+        topicAndTestListview.addFooterView(footerView);
     }
 
     public void itemClick(String item, int position) {
@@ -158,8 +193,14 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     //  Toast.makeText(TopicActivity.this, "size is " + topicList.size(), Toast.LENGTH_SHORT).show();
 
 
+                    //mArraylist = topicList;
 
-                    mArraylist = topicList;
+                    mArraylist.clear();
+
+                    for (Object name : topicList) {
+                        mArraylist.add(name);
+                    }
+
                     check = 0;
 
 
@@ -173,11 +214,11 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                             if (check == 0) {
 
                                 openMainActivity(0, textview.getText().toString(), null);
-                              //  Toast.makeText(TopicActivity.this, " Selected " + textview.getText().toString(), Toast.LENGTH_SHORT).show();
+                                //  Toast.makeText(TopicActivity.this, " Selected " + textview.getText().toString(), Toast.LENGTH_SHORT).show();
 
-                                try{
-                                    Answers.getInstance().logCustom(new CustomEvent("Topic open").putCustomAttribute("topic",textview.getText().toString()));
-                                }catch(Exception e){
+                                try {
+                                    Answers.getInstance().logCustom(new CustomEvent("Topic open").putCustomAttribute("topic", textview.getText().toString()));
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -274,7 +315,14 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
                 if (isSuccessful) {
                     // Toast.makeText(TopicActivity.this, "size is " + testList.size(), Toast.LENGTH_SHORT).show();
-                    mArraylist = testList;
+                    //mArraylist = testList;
+
+                    mArraylist.clear();
+
+                    for (Object name : testList) {
+                        mArraylist.add(name);
+                    }
+
                     check = 1;
                     adapter = new TopicListAdapter(getApplicationContext(), R.layout.custom_textview, mArraylist);
 
@@ -286,9 +334,9 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                                 openMainActivity(1, textview.getText().toString(), null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
-                                try{
-                                    Answers.getInstance().logCustom(new CustomEvent("Test series open").putCustomAttribute("test name",textview.getText().toString()));
-                                }catch(Exception e){
+                                try {
+                                    Answers.getInstance().logCustom(new CustomEvent("Test series open").putCustomAttribute("test name", textview.getText().toString()));
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -351,12 +399,11 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                             if (questionID != null) {
                                 openMainActivity(0, questionTopicName, questionID);
                                 try {
-                                     Answers.getInstance().logCustom(new CustomEvent("Via dyanamic link").putCustomAttribute("Question id", questionID).putCustomAttribute("question topic",questionTopicName));
+                                    Answers.getInstance().logCustom(new CustomEvent("Via dyanamic link").putCustomAttribute("Question id", questionID).putCustomAttribute("question topic", questionTopicName));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
-
 
 
                         }
@@ -400,12 +447,27 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         } else if (id == R.id.nav_rate) {
             onRateUs();
+        } else if (id == R.id.nav_logical_reasoning) {
+            onLogicalReasoningClick();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_topiclist_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
 
+    }
+
+    private void onLogicalReasoningClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.reasoning.logical.quiz.craftystudio.logicalreasoning";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("Logical Reasoning Click"));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void giveSuggestion() {
@@ -421,7 +483,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     private void onRateUs() {
         try {
-            String link = "https://goo.gl/Q7sjZi";
+            String link = "https://play.google.com/store/apps/details?id=app.aptitude.quiz.craftystudio.aptitudequiz";
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
         } catch (Exception e) {
 
@@ -430,9 +492,9 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     public void openRandomTestActivity(View view) {
 
-        try{
+        try {
             Answers.getInstance().logCustom(new CustomEvent("Random Test").putCustomAttribute("random test", "test"));
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -456,7 +518,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     protected void onRestart() {
         super.onRestart();
         //showDialog("Loading.. Please Wait");
-      //  downloadTopicList();
+        //  downloadTopicList();
 
         //initializeActivity();
     }

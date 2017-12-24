@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,12 +29,28 @@ public class FireBaseHandler {
     private FirebaseDatabase mFirebaseDatabase;
 
 
+    static ArrayList<ValueEventListener> valueEventListenerArrayList = new ArrayList<>();
+    static ArrayList<Query> databaseReferenceArrayList = new ArrayList<>();
+
+
+    static {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+    }
+
     public FireBaseHandler() {
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
     }
 
+    public static void removeListener() {
+        for (int i = 0; i < valueEventListenerArrayList.size(); i++) {
+            databaseReferenceArrayList.get(i).removeEventListener(valueEventListenerArrayList.get(i));
+
+        }
+        databaseReferenceArrayList.clear();
+        valueEventListenerArrayList.clear();
+    }
 
     public void uploadQuestion(final Questions questions, final OnQuestionlistener onQuestionlistener) {
 
@@ -100,7 +117,9 @@ public class FireBaseHandler {
 
         Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
 
-        myref2.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<String> testArrayList = new ArrayList<String>();
@@ -127,6 +146,8 @@ public class FireBaseHandler {
 
             }
         });
+
+        valueEventListenerArrayList.add(valueEventListener);
 
 
     }
@@ -169,7 +190,9 @@ public class FireBaseHandler {
 
         Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
 
-        myref2.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<String> topicArrayList = new ArrayList<String>();
@@ -196,6 +219,8 @@ public class FireBaseHandler {
 
             }
         });
+
+        valueEventListenerArrayList.add(valueEventListener);
 
 
     }
@@ -355,8 +380,10 @@ public class FireBaseHandler {
         mDatabaseRef = mFirebaseDatabase.getReference().child("Questions/");
 
         Query myref2 = mDatabaseRef.orderByChild("questionTopicName").equalTo(topicName).limitToLast(limit);
+        databaseReferenceArrayList.add(myref2);
 
-        myref2.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Questions> questionsArrayList = new ArrayList<Questions>();
@@ -386,6 +413,45 @@ public class FireBaseHandler {
             }
         });
 
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+/*
+
+        myref2.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.d("FIREBASE", "onChildAdded: "+dataSnapshot.toString());
+                ArrayList<Questions> questionsArrayList = new ArrayList<Questions>();
+
+                Questions questions = dataSnapshot.getValue(Questions.class);
+                questionsArrayList.add(questions);
+                onQuestionlistener.onQuestionListDownLoad(questionsArrayList, true);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.d("FIREBASE", "onChildAdded: "+dataSnapshot.toString());
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d("FIREBASE", "onChildAdded: "+dataSnapshot.toString());
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                Log.d("FIREBASE", "onChildAdded: "+dataSnapshot.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("FIREBASE", "onChildAdded: "+databaseError.toString());
+            }
+        });
+
+*/
 
     }
 
@@ -396,7 +462,10 @@ public class FireBaseHandler {
 
         Query myref2 = mDatabaseRef.orderByChild("questionTestName").equalTo(testName).limitToLast(limit);
 
-        myref2.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReferenceArrayList.add(myref2);
+
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Questions> questionsArrayList = new ArrayList<Questions>();
@@ -425,6 +494,8 @@ public class FireBaseHandler {
 
             }
         });
+
+        valueEventListenerArrayList.add(valueEventListener);
 
 
     }

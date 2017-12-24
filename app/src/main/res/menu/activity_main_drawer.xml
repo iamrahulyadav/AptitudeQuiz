@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_test"
             android:icon="@drawable/g4"
             android:title="Take Test" />
     </group>
+
+    <item
+        android:id="@+id/nav_logical_reasoning"
+        android:title="Logical Reasoning app" />
 
     <item android:title="Communicate">
         <menu>

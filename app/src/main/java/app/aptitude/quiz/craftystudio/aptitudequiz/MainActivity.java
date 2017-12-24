@@ -33,6 +33,9 @@ import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
@@ -40,6 +43,7 @@ import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import utils.FireBaseHandler;
@@ -67,8 +71,10 @@ public class MainActivity extends AppCompatActivity
     ProgressDialog progressDialog;
 
     Questions questions;
+    String questionUID;
 
     boolean isPushNotification = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +169,7 @@ public class MainActivity extends AppCompatActivity
 
             //if check == 0 get questions by topic name
             topicName = getIntent().getExtras().getString("Topic");
-            String questionUID = getIntent().getExtras().getString("questionUID");
+            questionUID = getIntent().getExtras().getString("questionUID");
 
             if (questionUID != null) {
 
@@ -202,6 +208,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+
+        FireBaseHandler.removeListener();
+
+        super.onDestroy();
+    }
+
     private void putExplaination() {
 
         Questions question = mQuestionsList.get(mPager.getCurrentItem());
@@ -211,9 +226,9 @@ public class MainActivity extends AppCompatActivity
     public static void showExplaination() {
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
-        try{
-            Answers.getInstance().logCustom(new CustomEvent("Explanation").putCustomAttribute("explain",1));
-        }catch(Exception e){
+        try {
+            Answers.getInstance().logCustom(new CustomEvent("Explanation").putCustomAttribute("explain", 1));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -333,6 +348,9 @@ public class MainActivity extends AppCompatActivity
 
     /* Download questions according to TOPIC name*/
     public void downloadQuestionByTopic(String topic) {
+
+        initializeViewPager();
+
         fireBaseHandler = new FireBaseHandler();
         fireBaseHandler.downloadQuestionList(topic, 8, new FireBaseHandler.OnQuestionlistener() {
             @Override
@@ -346,13 +364,22 @@ public class MainActivity extends AppCompatActivity
 
                 if (isSuccessful) {
 
-                    for (Questions questions : questionList) {
-                        mQuestionsList.add(questions);
-                    }
-                    initializeViewPager();
+                    if (mQuestionsList.size()<5) {
+                        for (Questions questions : questionList) {
+                            mQuestionsList.add(questions);
+                        }
+                    }else{
 
+                        addQuestionToList(questionList);
+
+                    }
+
+                    //Toast.makeText(MainActivity.this, "Question added", Toast.LENGTH_SHORT).show();
                     mPagerAdapter.notifyDataSetChanged();
+
+
                 }
+
                 hideDialog();
 
 
@@ -364,6 +391,25 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
+    }
+
+    private void addQuestionToList(ArrayList<Questions> questionList) {
+
+        boolean add= true;
+
+        for (int i=0;i<mQuestionsList.size();i++){
+
+            Questions questions =mQuestionsList.get(i);
+            if (questions.getQuestionUID().equalsIgnoreCase(questionList.get(0).getQuestionUID())){
+                add = false;
+                break;
+            }
+
+        }
+        if (add){
+            mQuestionsList.add(questionList.get(0));
+        }
 
     }
 
@@ -385,12 +431,15 @@ public class MainActivity extends AppCompatActivity
 
                 if (isSuccessful) {
 
+                    mQuestionsList.clear();
+
                     for (Questions questions : questionList) {
                         mQuestionsList.add(questions);
                     }
                     initializeViewPager();
 
                     mPagerAdapter.notifyDataSetChanged();
+
                 }
 
                 hideDialog();
@@ -469,6 +518,7 @@ public class MainActivity extends AppCompatActivity
         public int getCount() {
             return mQuestionsList.size();
         }
+
     }
 
 
@@ -655,9 +705,9 @@ public class MainActivity extends AppCompatActivity
         startActivity(Intent.createChooser(sharingIntent, "Share Aptitude Question via"));
         hideDialog();
 
-        try{
-            Answers.getInstance().logCustom(new CustomEvent("Share question").putCustomAttribute("question",questions.getQuestionName()).putCustomAttribute("question topic",questions.getQuestionTopicName()));
-        }catch(Exception e){
+        try {
+            Answers.getInstance().logCustom(new CustomEvent("Share question").putCustomAttribute("question", questions.getQuestionName()).putCustomAttribute("question topic", questions.getQuestionTopicName()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

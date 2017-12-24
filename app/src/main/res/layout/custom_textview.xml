@@ -13,6 +13,7 @@
         android:layout_marginTop="4dp"
         app:cardBackgroundColor="@color/colorWhiteBg"
         app:cardCornerRadius="4dp"
+        android:id="@+id/custom_background_cardView"
         app:cardElevation="0dp">
 
         <TextView

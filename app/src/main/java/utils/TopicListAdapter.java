@@ -22,7 +22,7 @@ import static android.R.attr.resource;
 
 public class TopicListAdapter extends ArrayAdapter<String> {
 
-    ArrayList<String> mTopicList;
+    ArrayList<Object> mTopicList;
     Context mContext;
 
     int mResourceID;
@@ -30,7 +30,7 @@ public class TopicListAdapter extends ArrayAdapter<String> {
     ClickListener clickListener;
 
 
-    public TopicListAdapter(Context context, int resource, ArrayList<String> topicList) {
+    public TopicListAdapter(Context context, int resource, ArrayList<Object> topicList) {
         super(context, resource);
         this.mTopicList = topicList;
         this.mContext = context;
@@ -51,7 +51,7 @@ public class TopicListAdapter extends ArrayAdapter<String> {
 
         TextView topicNameTextview = (TextView) convertView.findViewById(R.id.custom_textview);
 
-        topicNameTextview.setText(mTopicList.get(position));
+        topicNameTextview.setText((String)mTopicList.get(position));
 
         topicNameTextview.setOnClickListener(new View.OnClickListener() {
             @Override

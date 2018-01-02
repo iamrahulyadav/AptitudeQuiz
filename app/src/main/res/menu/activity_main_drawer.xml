@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_test"
@@ -13,6 +12,7 @@
     <item
         android:id="@+id/nav_logical_reasoning"
         android:title="Logical Reasoning app" />
+
 
     <item android:title="Communicate">
         <menu>
@@ -28,6 +28,28 @@
                 android:id="@+id/nav_suggest"
                 android:icon="@drawable/suggest"
                 android:title="Give Suggestion" />
+        </menu>
+    </item>
+
+    <item android:title="More from Crafty Studio">
+        <menu>
+
+            <item
+                android:id="@+id/nav_personality_development"
+                android:title="Personality Development app" />
+
+
+            <item
+                android:id="@+id/nav_daily_editorial"
+                android:title="Daily Editorial" />
+
+            <item
+                android:id="@+id/nav_pib"
+                android:title="PIB and AIR News" />
+
+
+
+
         </menu>
     </item>
 

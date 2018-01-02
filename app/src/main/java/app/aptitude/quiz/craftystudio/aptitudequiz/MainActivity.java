@@ -25,11 +25,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.NativeAd;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +45,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
+import com.rm.freedrawview.FreeDrawView;
 
 import org.w3c.dom.Text;
 
@@ -83,6 +90,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +129,7 @@ public class MainActivity extends AppCompatActivity
         View bottomSheet = findViewById(R.id.mainactivity_bottomsheet_linearlayout);
         mExplainationBottomsheetTextview = (TextView) findViewById(R.id.mainactivity_bottomsheet_textview);
 
+
         behavior = BottomSheetBehavior.from(bottomSheet);
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -133,9 +142,12 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
                         putExplaination();
+
+                        onClearNotePadClick(mExplainationBottomsheetTextview);
                         Log.i("BottomSheetCallback", "BottomSheetBehavior.STATE_EXPANDED");
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
+                        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
                         break;
@@ -220,7 +232,7 @@ public class MainActivity extends AppCompatActivity
     private void putExplaination() {
 
         Questions question = mQuestionsList.get(mPager.getCurrentItem());
-        mExplainationBottomsheetTextview.setText(question.getQuestionExplaination());
+        mExplainationBottomsheetTextview.setText(question.getQuestionName());
     }
 
     public static void showExplaination() {
@@ -320,10 +332,8 @@ public class MainActivity extends AppCompatActivity
                                 isMoreQuestionAvailable = false;
                             }
                         }
-
-                        //initializeNativeAds();
+                        addNativeAds();
                         mPagerAdapter.notifyDataSetChanged();
-
                         hideDialog();
 
 
@@ -342,8 +352,6 @@ public class MainActivity extends AppCompatActivity
         } else {
 
         }
-
-
     }
 
     /* Download questions according to TOPIC name*/
@@ -364,16 +372,17 @@ public class MainActivity extends AppCompatActivity
 
                 if (isSuccessful) {
 
-                    if (mQuestionsList.size()<5) {
+                    if (mQuestionsList.size() < 5) {
                         for (Questions questions : questionList) {
                             mQuestionsList.add(questions);
                         }
-                    }else{
+                    } else {
 
                         addQuestionToList(questionList);
 
                     }
 
+                    addNativeAds();
                     //Toast.makeText(MainActivity.this, "Question added", Toast.LENGTH_SHORT).show();
                     mPagerAdapter.notifyDataSetChanged();
 
@@ -396,18 +405,18 @@ public class MainActivity extends AppCompatActivity
 
     private void addQuestionToList(ArrayList<Questions> questionList) {
 
-        boolean add= true;
+        boolean add = true;
 
-        for (int i=0;i<mQuestionsList.size();i++){
+        for (int i = 0; i < mQuestionsList.size(); i++) {
 
-            Questions questions =mQuestionsList.get(i);
-            if (questions.getQuestionUID().equalsIgnoreCase(questionList.get(0).getQuestionUID())){
+            Questions questions = mQuestionsList.get(i);
+            if (questions.getQuestionUID().equalsIgnoreCase(questionList.get(0).getQuestionUID())) {
                 add = false;
                 break;
             }
 
         }
-        if (add){
+        if (add) {
             mQuestionsList.add(questionList.get(0));
         }
 
@@ -437,6 +446,8 @@ public class MainActivity extends AppCompatActivity
                         mQuestionsList.add(questions);
                     }
                     initializeViewPager();
+
+                    addNativeAds();
 
                     mPagerAdapter.notifyDataSetChanged();
 
@@ -492,6 +503,23 @@ public class MainActivity extends AppCompatActivity
         onShareClick();
     }
 
+    public void onShowNotePad(View view) {
+        showExplaination();
+    }
+
+    public void onCloseNotePadClick(View view) {
+        if (behavior != null) {
+            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+    }
+
+    public void onClearNotePadClick(View view) {
+
+        FreeDrawView freeDrawView = (FreeDrawView) findViewById(R.id.mainactivity_bottomsheet_drawView);
+        freeDrawView.clearDraw();
+
+    }
+
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -521,6 +549,43 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void addNativeAds() {
+
+        for (int i = 1; i < mQuestionsList.size(); i = i + 3) {
+            if (mQuestionsList.get(i).getNativeAd() == null) {
+
+                NativeAd nativeAd = new NativeAd(this, "1510043762404923_1510047485737884");
+                nativeAd.setAdListener(new AdListener() {
+
+                    @Override
+                    public void onError(Ad ad, AdError adError) {
+                        Log.d("TAG", "onError: " + adError.getErrorMessage());
+                    }
+
+                    @Override
+                    public void onAdLoaded(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onAdClicked(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onLoggingImpression(Ad ad) {
+
+                    }
+                });
+
+                // Initiate a request to load an ad.
+                nativeAd.loadAd();
+
+                mQuestionsList.get(i).setNativeAd(nativeAd);
+
+            }
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -640,7 +705,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void hideDialog() {
-        progressDialog.cancel();
+        try {
+            progressDialog.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

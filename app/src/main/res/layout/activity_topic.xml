@@ -17,6 +17,7 @@
         android:background="?attr/colorPrimary"
         android:elevation="8dp"
         android:visibility="visible"
+        android:overScrollMode="always"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:titleTextColor="@color/colorWhiteBg" />
 
@@ -31,6 +32,7 @@
         android:onClick="openRandomTestActivity"
         app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="4dp"
+        android:visibility="gone"
         app:cardElevation="2dp">
 
         <TextView

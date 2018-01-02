@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,13 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.AdSize;
+import com.facebook.ads.AdView;
+import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
@@ -55,6 +63,10 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     int check;
 
     ProgressDialog progressDialog;
+    private LinearLayout linearLayout;
+
+    AdView adView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +91,12 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         FireBaseHandler.removeListener();
 
+        if (adView !=null){
+            adView.destroy();
+        }
+
         super.onDestroy();
     }
-
 
 
     public void initializeActivity() {
@@ -114,6 +129,50 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
 
         setListViewFooter();
+        setListViewHeader();
+
+    }
+
+    private void setListViewHeader() {
+
+        linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        topicAndTestListview.addHeaderView(linearLayout);
+
+        final View footerView = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+
+        TextView topicNameTextview = (TextView) footerView.findViewById(R.id.custom_textview);
+        topicNameTextview.setText("Take Test");
+        topicNameTextview.setTextColor(Color.parseColor("#FFFFFF"));
+
+        CardView cardView = (CardView) footerView.findViewById(R.id.custom_background_cardView);
+        cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+        footerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openRandomTestActivity(footerView);
+            }
+        });
+
+        linearLayout.addView(footerView);
+
+
+
+        // Instantiate an AdView view
+        adView = new AdView(this, "1510043762404923_1510291979046768", AdSize.BANNER_HEIGHT_50);
+
+        View headerAdView = ((LayoutInflater) TopicActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+
+
+        CardView cardAdView = (CardView) headerAdView.findViewById(R.id.custom_background_cardView);
+        cardAdView.removeAllViews();
+        cardAdView.addView(adView);
+
+        adView.loadAd();
+
+        linearLayout.addView(headerAdView);
+
 
     }
 
@@ -134,6 +193,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             }
         });
         topicAndTestListview.addFooterView(footerView);
+
     }
 
     public void itemClick(String item, int position) {
@@ -174,7 +234,11 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     }
 
     public void hideDialog() {
-        progressDialog.cancel();
+        try {
+            progressDialog.cancel();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void downloadTopicList() {
@@ -449,12 +513,55 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             onRateUs();
         } else if (id == R.id.nav_logical_reasoning) {
             onLogicalReasoningClick();
+        } else if (id == R.id.nav_personality_development) {
+            onPersonalityDevelopment();
+        } else if (id == R.id.nav_daily_editorial) {
+            onDailyEditorialClick();
+        } else if ((id == R.id.nav_pib)) {
+            onPIBClick();
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_topiclist_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
 
+    }
+
+    private void onPIBClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.crafty.studio.current.affairs.pib";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("PIB CLick"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onDailyEditorialClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.craftystudio.vocabulary.dailyeditorial";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("Daily Editorial"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onPersonalityDevelopment() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.story.craftystudio.shortstory";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("Personality Development"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void onLogicalReasoningClick() {

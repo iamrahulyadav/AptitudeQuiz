@@ -155,7 +155,7 @@
             app:paintAlpha="255"
             android:layout_weight="1"
             app:paintColor="#000000"
-            app:paintWidth="4dp"
+            app:paintWidth="2dp"
             app:resizeBehaviour="crop" />
 
 
@@ -168,10 +168,9 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Clear all"
+                android:text="Clear"
                 android:layout_weight="1"
                 android:onClick="onClearNotePadClick"
-
                 />
 
             <Button

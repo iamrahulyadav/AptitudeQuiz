@@ -160,7 +160,7 @@
             android:background="#ffffff"
             app:paintAlpha="255"
             app:paintColor="#000000"
-            app:paintWidth="4dp"
+            app:paintWidth="2dp"
             app:resizeBehaviour="crop" />
 
 
@@ -175,7 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onClearNotePadClick"
-                android:text="Clear all"
+                android:text="Clear"
 
                 />
 

@@ -161,6 +161,31 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         // Instantiate an AdView view
         adView = new AdView(this, "1510043762404923_1510291979046768", AdSize.BANNER_HEIGHT_50);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                try {
+                    Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement","banner"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+
+            }
+        });
 
         View headerAdView = ((LayoutInflater) TopicActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
 

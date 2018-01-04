@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
         try {
-            Answers.getInstance().logCustom(new CustomEvent("Explanation").putCustomAttribute("explain", 1));
+            Answers.getInstance().logCustom(new CustomEvent("Freenotepad").putCustomAttribute("explain", 1));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -560,6 +560,12 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onError(Ad ad, AdError adError) {
                         Log.d("TAG", "onError: " + adError.getErrorMessage());
+
+                        try {
+                            Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement","banner"));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override

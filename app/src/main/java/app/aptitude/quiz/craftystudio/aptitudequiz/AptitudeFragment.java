@@ -184,6 +184,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
                                 CardView adContainer = (CardView) view.findViewById(R.id.nativeAd_view_container);
                                 adContainer.setVisibility(View.VISIBLE);
 
+
                                 adContainer.removeAllViews();
 
                                 View adView = NativeAdView.render(getContext(), nativeAd, NativeAdView.Type.HEIGHT_300);

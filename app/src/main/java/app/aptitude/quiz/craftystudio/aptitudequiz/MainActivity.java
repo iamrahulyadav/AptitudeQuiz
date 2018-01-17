@@ -451,6 +451,7 @@ public class MainActivity extends AppCompatActivity
 
                     mPagerAdapter.notifyDataSetChanged();
 
+
                 }
 
                 hideDialog();

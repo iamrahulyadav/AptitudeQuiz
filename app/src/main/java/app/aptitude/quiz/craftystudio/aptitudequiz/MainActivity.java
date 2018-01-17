@@ -364,11 +364,11 @@ public class MainActivity extends AppCompatActivity
 
                 if (isSuccessful) {
 
-                    if (mQuestionsList.size()<5) {
+                    if (mQuestionsList.size() < 5) {
                         for (Questions questions : questionList) {
                             mQuestionsList.add(questions);
                         }
-                    }else{
+                    } else {
 
                         addQuestionToList(questionList);
 
@@ -396,18 +396,18 @@ public class MainActivity extends AppCompatActivity
 
     private void addQuestionToList(ArrayList<Questions> questionList) {
 
-        boolean add= true;
+        boolean add = true;
 
-        for (int i=0;i<mQuestionsList.size();i++){
+        for (int i = 0; i < mQuestionsList.size(); i++) {
 
-            Questions questions =mQuestionsList.get(i);
-            if (questions.getQuestionUID().equalsIgnoreCase(questionList.get(0).getQuestionUID())){
+            Questions questions = mQuestionsList.get(i);
+            if (questions.getQuestionUID().equalsIgnoreCase(questionList.get(0).getQuestionUID())) {
                 add = false;
                 break;
             }
 
         }
-        if (add){
+        if (add) {
             mQuestionsList.add(questionList.get(0));
         }
 
@@ -490,6 +490,15 @@ public class MainActivity extends AppCompatActivity
     public void onShareQuestion(View view) {
         questions = mQuestionsList.get(mPager.getCurrentItem());
         onShareClick();
+    }
+
+    public void openTipsAndTricks(View view) {
+        questions = mQuestionsList.get(mPager.getCurrentItem());
+
+        Intent intent = new Intent(MainActivity.this, TipsAndTricksActivity.class);
+        intent.putExtra("TopicName", questions.getQuestionTopicName());
+        startActivity(intent);
+
     }
 
 

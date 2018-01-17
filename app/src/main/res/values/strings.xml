@@ -9,4 +9,5 @@
     <string name="title_dashboard">Topic</string>
     <string name="title_notifications">Test</string>
     <string name="title_activity_random_test">Aptitude Test</string>
+    <string name="title_activity_tips_and_tricks">TipsAndTricksActivity</string>
 </resources>

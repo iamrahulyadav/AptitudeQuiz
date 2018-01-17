@@ -55,8 +55,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="14dp"
+                    android:onClick="openTipsAndTricks"
+                    android:src="@drawable/g3" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="14dp"
                     android:onClick="onShareQuestion"
                     android:src="@drawable/ic_action_share" />
+
                 <!--Random Number display textview -->
                 <TextView
                     android:id="@+id/fragmentAptitudeQuiz_randomNumber_Textview"

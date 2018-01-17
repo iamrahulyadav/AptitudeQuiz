@@ -252,6 +252,32 @@ public class FireBaseHandler {
 
     }
 
+    public void downloadTipsAndTricks(String topicName, final OnTipsAndTrickslistener onTipsAndTrickslistener) {
+
+
+        DatabaseReference myRef = mFirebaseDatabase.getReference().child("TipsAndTricks/" + topicName);
+
+        ValueEventListener valueEventListener = myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String tipsData = dataSnapshot.getValue(String.class);
+
+
+                onTipsAndTrickslistener.onTipsDownLoad(tipsData, true);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTipsAndTrickslistener.onTipsDownLoad(null, false);
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
 
     //random no generate
     final int min = 1;
@@ -521,6 +547,14 @@ public class FireBaseHandler {
 
 
         public void onTopicUpload(boolean isSuccessful);
+    }
+
+    public interface OnTipsAndTrickslistener {
+
+
+        public void onTipsDownLoad(String tips, boolean isSuccessful);
+
+
     }
 
     public interface OnTestSerieslistener {

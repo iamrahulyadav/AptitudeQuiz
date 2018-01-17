@@ -522,6 +522,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void openTipsAndTricks(View view) {
+        questions = mQuestionsList.get(mPager.getCurrentItem());
+
+        Intent intent = new Intent(MainActivity.this, TipsAndTricksActivity.class);
+        intent.putExtra("TopicName", questions.getQuestionTopicName());
+        startActivity(intent);
+
+    }
+
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {

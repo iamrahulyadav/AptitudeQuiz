@@ -91,7 +91,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         FireBaseHandler.removeListener();
 
-        if (adView !=null){
+        if (adView != null) {
             adView.destroy();
         }
 
@@ -158,14 +158,13 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         linearLayout.addView(footerView);
 
 
-
         // Instantiate an AdView view
         adView = new AdView(this, "1510043762404923_1510291979046768", AdSize.BANNER_HEIGHT_50);
         adView.setAdListener(new AdListener() {
             @Override
             public void onError(Ad ad, AdError adError) {
                 try {
-                    Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement","banner"));
+                    Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement", "banner"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -242,9 +241,15 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     downloadTopicList();
                     return true;
 
+                case R.id.navigation_daily_quiz:
+                    downloadDateList();
+                    return true;
+
                 case R.id.navigation_test_Series:
                     downloadTestList();
                     return true;
+
+
             }
             return false;
         }
@@ -392,6 +397,67 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     }
 
 
+    public void downloadDateList() {
+        fireBaseHandler.downloadDateList(15, new FireBaseHandler.OnTestSerieslistener() {
+            @Override
+            public void onTestDownLoad(String test, boolean isSuccessful) {
+
+            }
+
+            @Override
+            public void onTestListDownLoad(ArrayList<String> testList, boolean isSuccessful) {
+                if (isSuccessful) {
+
+                    mArraylist.clear();
+
+                    for (Object name : testList) {
+                        mArraylist.add(name);
+                    }
+
+                    //check = 1 is Test Series
+                    check = 1;
+                    adapter = new TopicListAdapter(getApplicationContext(), R.layout.custom_textview, mArraylist);
+
+                    adapter.setOnItemCLickListener(new ClickListener() {
+                        @Override
+                        public void onItemCLickListener(View view, int position) {
+                            TextView textview = (TextView) view;
+                            if (check == 1) {
+                                openMainActivity(1, textview.getText().toString(), null);
+                                //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    Answers.getInstance().logCustom(new CustomEvent("Daily Quiz open").putCustomAttribute("Date Name", textview.getText().toString()));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+                    });
+
+
+                    topicAndTestListview.post(new Runnable() {
+                        public void run() {
+                            topicAndTestListview.setAdapter(adapter);
+                        }
+                    });
+
+
+                    hideDialog();
+
+                }
+                hideDialog();
+            }
+
+            @Override
+            public void onTestUpload(boolean isSuccessful) {
+
+            }
+
+        });
+    }
+
     public void downloadTestList() {
         fireBaseHandler.downloadTestList(30, new FireBaseHandler.OnTestSerieslistener() {
             @Override
@@ -519,6 +585,16 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             startActivity(intent);
 
             // Handle the camera action
+        } else if (id == R.id.nav_bookmark) {
+
+            Intent intent = new Intent(TopicActivity.this, BookmarkActivity.class);
+            startActivity(intent);
+
+        } else if (id == R.id.nav_formula) {
+
+            Intent intent = new Intent(TopicActivity.this, TipsTopicListActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_suggest) {
 
             giveSuggestion();
@@ -544,6 +620,10 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             onDailyEditorialClick();
         } else if ((id == R.id.nav_pib)) {
             onPIBClick();
+        } else if ((id == R.id.nav_basic_Computer)) {
+            onBasicComputerClick();
+        } else if ((id == R.id.nav_short_key)) {
+            onShortKeyClick();
         }
 
 
@@ -559,6 +639,30 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
 
             Answers.getInstance().logCustom(new CustomEvent("PIB CLick"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onBasicComputerClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.computer.basic.quiz.craftystudio.computerbasic";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("Basic Computer CLick"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onShortKeyClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.key.ashort.craftystudio.shortkeysapp";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("ShortKey CLick"));
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import utils.DataBaseHandler;
 import utils.FireBaseHandler;
 import utils.Questions;
 import utils.ZoomOutPageTransformer;
@@ -95,10 +96,25 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
 
-                uploadQuestion();
+                fireBaseHandler.uploadDateName("", new FireBaseHandler.OnTopiclistener() {
+                    @Override
+                    public void onTopicDownLoad(String topic, boolean isSuccessful) {
+                        if (isSuccessful){
+                            Toast.makeText(MainActivity.this, "uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onTopicListDownLoad(ArrayList<String> topicList, boolean isSuccessful) {
+
+                    }
+
+                    @Override
+                    public void onTopicUpload(boolean isSuccessful) {
+
+                    }
+                });
 
             }
         });
@@ -228,6 +244,7 @@ public class MainActivity extends AppCompatActivity
 
         super.onDestroy();
     }
+
 
     private void putExplaination() {
 
@@ -522,6 +539,28 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void openTipsAndTricks(View view) {
+        questions = mQuestionsList.get(mPager.getCurrentItem());
+
+        Intent intent = new Intent(MainActivity.this, TipsAndTricksActivity.class);
+        intent.putExtra("TopicName", questions.getQuestionTopicName());
+        startActivity(intent);
+
+    }
+
+    public void onBookMarkQuestion(View view) {
+        //Adding Question to Bookmark
+        DataBaseHandler db = new DataBaseHandler(MainActivity.this);
+        /**
+         * CRUD Operations
+         * */
+        // Inserting Contacts
+        //Log.d("Insert: ", "Inserting ..");
+        db.addBookMark(mQuestionsList.get(mPager.getCurrentItem()));
+        Toast.makeText(this, "Question Bookmarked", Toast.LENGTH_SHORT).show();
+
+    }
+
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -564,7 +603,7 @@ public class MainActivity extends AppCompatActivity
                         Log.d("TAG", "onError: " + adError.getErrorMessage());
 
                         try {
-                            Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement","banner"));
+                            Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement", "banner"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -620,6 +659,8 @@ public class MainActivity extends AppCompatActivity
             }
 
         }
+
+        FireBaseHandler.removeListener();
 
 
     }

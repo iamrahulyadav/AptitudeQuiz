@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="app.aptitude.quiz.craftystudio.aptitudequiz.TipsTopicListActivity"
+    tools:showIn="@layout/activity_tips_topic_list">
+
+
+    <ListView
+        android:id="@+id/tipsTopicListActivity_topic_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/colorLightWhiteBg"
+        android:divider="@color/colorTransparent"
+        android:dividerHeight="0dp">
+
+    </ListView>
+</LinearLayout>

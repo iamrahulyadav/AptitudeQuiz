@@ -8,5 +8,10 @@
     <string name="title_activity_topic">Aptitude Questions</string>
     <string name="title_dashboard">Topic</string>
     <string name="title_notifications">Test</string>
+    <string name="title_daily_quiz">Daily</string>
+
     <string name="title_activity_random_test">Aptitude Test</string>
+    <string name="title_activity_tips_and_tricks">TipsAndTricksActivity</string>
+    <string name="title_activity_bookmark">BookmarkActivity</string>
+    <string name="title_activity_tips_topic_list">Formula and Tips</string>
 </resources>

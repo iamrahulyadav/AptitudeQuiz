@@ -34,17 +34,6 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_margin="4dp"
-                    android:onClick="onShowNotePad"
-                    android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_freenote"
-
-                    />
-
                 <!--Topic name textview -->
                 <TextView
                     android:id="@+id/fragmentAptitudeQuiz_topicName_Textview"
@@ -61,14 +50,47 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <!--Free notepad Imageview -->
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="4dp"
+                    android:onClick="onShowNotePad"
+                    android:src="@mipmap/ic_freenote"
+
+                    />
+
+                <!--Bookmark question Imageview -->
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="4dp"
+                    android:onClick="onBookMarkQuestion"
+                    android:src="@drawable/ic_action_bookmark"
+
+                    />
+
+                <!--formula and tips Imageview -->
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="4dp"
+                    android:onClick="openTipsAndTricks"
+                    android:src="@drawable/g3" />
+
+                <!--Share Question Imageview -->
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_margin="4dp"
                     android:onClick="onShareQuestion"
-                    android:layout_gravity="center_vertical"
 
                     android:src="@drawable/ic_action_share" />
+
                 <!--Random Number display textview -->
                 <TextView
                     android:id="@+id/fragmentAptitudeQuiz_randomNumber_Textview"
@@ -151,9 +173,9 @@
             android:id="@+id/mainactivity_bottomsheet_drawView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="#ffffff"
             app:paintAlpha="255"
-            android:layout_weight="1"
             app:paintColor="#000000"
             app:paintWidth="2dp"
             app:resizeBehaviour="crop" />
@@ -161,29 +183,25 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Clear"
                 android:layout_weight="1"
                 android:onClick="onClearNotePadClick"
-                />
+                android:text="Clear" />
 
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="close"
                 android:layout_weight="1"
                 android:onClick="onCloseNotePadClick"
-                />
+                android:text="close" />
 
         </LinearLayout>
-
-
 
 
     </LinearLayout>

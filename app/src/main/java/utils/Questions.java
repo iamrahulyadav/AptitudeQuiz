@@ -1,5 +1,8 @@
 package utils;
 
+
+import com.facebook.ads.NativeAd;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +17,8 @@ public class Questions implements Serializable {
     private String optionB;
     private String optionC;
     private String optionD;
+
+    transient NativeAd nativeAd;
 
     public int getRandomNumber() {
         return randomNumber;
@@ -128,5 +133,13 @@ public class Questions implements Serializable {
 
     public void setQuestionExplaination(String questionExplaination) {
         this.questionExplaination = questionExplaination;
+    }
+
+    public NativeAd getNativeAd() {
+        return nativeAd;
+    }
+
+    public void setNativeAd(NativeAd nativeAd) {
+        this.nativeAd = nativeAd;
     }
 }

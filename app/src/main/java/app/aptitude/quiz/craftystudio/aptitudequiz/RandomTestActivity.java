@@ -42,6 +42,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
+import com.rm.freedrawview.FreeDrawView;
 
 import org.w3c.dom.Text;
 
@@ -137,9 +138,12 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
                         putExplaination();
+
+                        onClearNotePadClick(mExplainationBottomsheetTextview);
                         Log.i("BottomSheetCallback", "BottomSheetBehavior.STATE_EXPANDED");
                         break;
                     case BottomSheetBehavior.STATE_COLLAPSED:
+                        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
                         break;
                     case BottomSheetBehavior.STATE_HIDDEN:
                         break;
@@ -157,24 +161,43 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isRandomTestQuestions=false;
+        FireBaseHandler.removeListener();
+    }
+
     private void putExplaination() {
 
         Questions question = mQuestionsList.get(mPager.getCurrentItem());
-        mExplainationBottomsheetTextview.setText(question.getQuestionExplaination());
+        mExplainationBottomsheetTextview.setText(question.getQuestionName());
     }
 
     public static void showExplaination(Context context) {
 
-        if (!isRandomTestQuestions) {
+
             behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             try{
-                Answers.getInstance().logCustom(new CustomEvent("Explanation").putCustomAttribute("explain",1));
+                Answers.getInstance().logCustom(new CustomEvent("Freenotepad").putCustomAttribute("explain",1));
             }catch(Exception e){
                 e.printStackTrace();
             }
-        } else {
-            Toast.makeText(context, "Complete the Test First", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+    public void onCloseNotePadClick(View view) {
+        if (behavior != null) {
+            behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
+    }
+
+    public void onClearNotePadClick(View view) {
+
+        FreeDrawView freeDrawView = (FreeDrawView) findViewById(R.id.randomTestactivity_bottomsheet_drawView);
+        freeDrawView.clearDraw();
+
     }
 
     private void onRefreshTest() {
@@ -224,6 +247,7 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
         wrongAnswer = 10 - rightAnswer;
 
+        try{
         AlertDialog.Builder builder = new AlertDialog.Builder(RandomTestActivity.this);
 
         builder.setMessage("Right Answers = " + rightAnswer + " \n\n Wrong Answers = " + wrongAnswer)
@@ -238,11 +262,9 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
         final AlertDialog mydialog = builder.create();
         //   mydialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize(16);
         mydialog.show();
-        // displayRightAnswers.setText("Right = " + rightAnswer + " Wrong = " + wrongAnswer);
-        // Toast.makeText(this, "right answers " + rightAnswer + " wrong answers " + wrongAnswer, Toast.LENGTH_SHORT).show();
 
 
-        try{
+
             Answers.getInstance().logCustom(new CustomEvent("Test submitted").putCustomAttribute("score",rightAnswer));
         }catch(Exception e){
             e.printStackTrace();
@@ -306,6 +328,9 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    public void onShowNotePad(View view) {
+        showExplaination(this);
+    }
 
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -412,7 +437,11 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void hideDialog() {
-        progressDialog.cancel();
+        try {
+            progressDialog.cancel();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

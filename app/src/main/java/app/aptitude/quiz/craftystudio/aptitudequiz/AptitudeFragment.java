@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.media.Rating;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,12 +21,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.crashlytics.android.answers.CustomEvent;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +43,8 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
+
+import java.util.ArrayList;
 
 import utils.Questions;
 
@@ -133,8 +144,81 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
 
         getUserAnswers();
 
+        initializeNativeAd(view);
+
 
         return view;
+    }
+
+    private void initializeNativeAd(final View view) {
+
+        final NativeAd nativeAd = questions.getNativeAd();
+        if (nativeAd != null) {
+
+            if (nativeAd.isAdLoaded()) {
+
+                CardView adContainer = (CardView) view.findViewById(R.id.nativeAd_view_container);
+                adContainer.setVisibility(View.VISIBLE);
+
+                adContainer.removeAllViews();
+
+                View adView = NativeAdView.render(getContext(), nativeAd, NativeAdView.Type.HEIGHT_300);
+                // Add the Native Ad View to your ad container
+                adContainer.addView(adView);
+
+
+            } else {
+
+                nativeAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onError(Ad ad, AdError adError) {
+
+                    }
+
+                    @Override
+                    public void onAdLoaded(Ad ad) {
+
+                        if (view != null) {
+
+                            try {
+                                CardView adContainer = (CardView) view.findViewById(R.id.nativeAd_view_container);
+                                adContainer.setVisibility(View.VISIBLE);
+
+
+                                adContainer.removeAllViews();
+
+                                View adView = NativeAdView.render(getContext(), nativeAd, NativeAdView.Type.HEIGHT_300);
+                                // Add the Native Ad View to your ad container
+                                adContainer.addView(adView);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onAdClicked(Ad ad) {
+
+                    }
+
+                    @Override
+                    public void onLoggingImpression(Ad ad) {
+
+                    }
+                });
+
+                View adContainer = view.findViewById(R.id.nativeAd_view_container);
+                adContainer.setVisibility(View.GONE);
+
+            }
+        } else {
+            View adContainer = view.findViewById(R.id.nativeAd_view_container);
+            adContainer.setVisibility(View.GONE);
+
+        }
+
     }
 
 

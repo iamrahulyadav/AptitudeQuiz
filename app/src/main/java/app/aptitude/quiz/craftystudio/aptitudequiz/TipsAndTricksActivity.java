@@ -85,6 +85,11 @@ public class TipsAndTricksActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }

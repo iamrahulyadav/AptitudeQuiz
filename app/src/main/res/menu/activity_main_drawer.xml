@@ -3,10 +3,24 @@
 
 
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_formula"
+            android:icon="@drawable/g3"
+            android:title="Formula and Tips" />
+
+
+        <item
+            android:id="@+id/nav_bookmark"
+            android:icon="@drawable/ic_action_bookmark"
+            android:title="Bookmark Question" />
+
         <item
             android:id="@+id/nav_test"
             android:icon="@drawable/g4"
-            android:title="Take Test" />
+            android:title="Random Test" />
+
+
     </group>
 
     <item
@@ -46,8 +60,12 @@
             <item
                 android:id="@+id/nav_pib"
                 android:title="PIB and AIR News" />
-
-
+            <item
+                android:id="@+id/nav_basic_Computer"
+                android:title="Basic Computer App" />
+            <item
+                android:id="@+id/nav_short_key"
+                android:title="Computer Short Keys" />
 
 
         </menu>

@@ -110,6 +110,7 @@ public class FireBaseHandler {
 
     }
 
+
     public void downloadTestList(int limit, final OnTestSerieslistener onTestSerieslistener) {
 
 
@@ -153,6 +154,48 @@ public class FireBaseHandler {
     }
 
 
+    public void downloadDateList(int limit, final OnTestSerieslistener onTestSerieslistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("Date/");
+
+        Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> dateArrayList = new ArrayList<String>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String test = snapshot.getValue(String.class);
+                    if (test != null) {
+                        dateArrayList.add(test);
+
+                    }
+                }
+
+                Collections.reverse(dateArrayList);
+
+                onTestSerieslistener.onTestListDownLoad(dateArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTestSerieslistener.onTestListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
     public void uploadTopicName(final String topic, final OnTopiclistener onTopiclistener) {
 
 
@@ -183,6 +226,35 @@ public class FireBaseHandler {
 
     }
 
+    public void uploadDateName(final String date, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("Date/");
+
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Date/" + mDatabaseRef.push().getKey());
+
+        //DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Topic/");
+
+
+        mDatabaseRef1.setValue(date).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onTopiclistener.onTopicDownLoad(date, true);
+                onTopiclistener.onTopicUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onTopiclistener.onTopicUpload(false);
+                onTopiclistener.onTopicDownLoad(null, false);
+            }
+        });
+
+
+    }
     public void downloadTopicList(int limit, final OnTopiclistener onTopiclistener) {
 
 

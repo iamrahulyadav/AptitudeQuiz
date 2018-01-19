@@ -18,6 +18,7 @@ public class Questions implements Serializable {
     private String optionC;
     private String optionD;
 
+
     transient NativeAd nativeAd;
 
     public int getRandomNumber() {
@@ -42,7 +43,7 @@ public class Questions implements Serializable {
         this.userAnswer = userAnswer;
     }
 
-    private String userAnswer =null;
+    private String userAnswer = null;
 
     public String getQuestionUID() {
         return questionUID;

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Aptitude.iml" filepath="$PROJECT_DIR$/Aptitude.iml" />
       <module fileurl="file://C:\Users\Aisha\AndroidStudioProjects\AptitudeQuiz\Aptitude.iml" filepath="C:\Users\Aisha\AndroidStudioProjects\AptitudeQuiz\Aptitude.iml" />
       <module fileurl="file://$PROJECT_DIR$/AptitudeQuiz.iml" filepath="$PROJECT_DIR$/AptitudeQuiz.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

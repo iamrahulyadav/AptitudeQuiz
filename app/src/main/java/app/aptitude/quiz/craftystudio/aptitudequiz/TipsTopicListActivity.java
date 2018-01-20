@@ -55,6 +55,19 @@ public class TipsTopicListActivity extends AppCompatActivity {
         showDialog("Loading...Please wait");
         downloadTopicList();
 
+        try{
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public void showDialog(String message) {
@@ -143,6 +156,14 @@ public class TipsTopicListActivity extends AppCompatActivity {
         intent.putExtra("TopicName", topicName);
         startActivity(intent);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        FireBaseHandler.removeListener();
+
+        super.onDestroy();
     }
 
 

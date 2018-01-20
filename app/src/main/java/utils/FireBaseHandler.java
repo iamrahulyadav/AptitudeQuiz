@@ -328,6 +328,7 @@ public class FireBaseHandler {
 
 
         DatabaseReference myRef = mFirebaseDatabase.getReference().child("TipsAndTricks/" + topicName);
+        databaseReferenceArrayList.add(myRef);
 
         ValueEventListener valueEventListener = myRef.addValueEventListener(new ValueEventListener() {
             @Override

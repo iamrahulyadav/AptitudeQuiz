@@ -488,7 +488,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initializeViewPager() {
 
-// Instantiate a ViewPager and a PagerAdapter.
+        // Instantiate a ViewPager and a PagerAdapter.
 
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);

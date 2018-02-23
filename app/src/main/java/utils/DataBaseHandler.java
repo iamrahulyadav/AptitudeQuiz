@@ -15,6 +15,7 @@ import java.util.List;
 
 public class DataBaseHandler extends SQLiteOpenHelper {
 
+
     // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 3;
@@ -36,7 +37,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String KEY_PREVIOUS_YEAR = "previous_year";
     private static final String KEY_EXPLAINATION = "explaination";
     private static final String KEY_QUESTION_UID = "question_uid";
-
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

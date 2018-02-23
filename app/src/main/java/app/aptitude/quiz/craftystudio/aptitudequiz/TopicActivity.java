@@ -349,6 +349,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     }
 
 
+
     public void uploadTopicName() {
         FireBaseHandler fireBaseHandler = new FireBaseHandler();
         fireBaseHandler.uploadTopicName("Time and Work", new FireBaseHandler.OnTopiclistener() {

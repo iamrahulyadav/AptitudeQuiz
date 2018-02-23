@@ -72,9 +72,5 @@ dependencies {
         transitive = true;
     }
 
-    compile('com.mopub:mopub-sdk:4.19.0@aar') {
-        transitive = true
-    }
-
 }
 apply plugin: 'com.google.gms.google-services'

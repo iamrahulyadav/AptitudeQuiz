@@ -12,6 +12,8 @@ apply plugin: 'io.fabric'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://s3.amazonaws.com/moat-sdk-builds" }
+    maven { url 'https://maven.google.com' }
 }
 
 
@@ -69,5 +71,10 @@ dependencies {
     compile('com.crashlytics.sdk.android:answers:1.4.1@aar') {
         transitive = true;
     }
+
+    compile('com.mopub:mopub-sdk:4.19.0@aar') {
+        transitive = true
+    }
+
 }
 apply plugin: 'com.google.gms.google-services'

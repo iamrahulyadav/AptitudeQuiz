@@ -39,10 +39,8 @@
                     android:id="@+id/fragmentAptitudeQuiz_topicName_Textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_margin="8dp"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:text="Topic Name"
                     android:textAlignment="center"
@@ -52,8 +50,8 @@
 
                 <!--Free notepad Imageview -->
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="40dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="4dp"
                     android:onClick="onShowNotePad"
@@ -63,7 +61,7 @@
 
                 <!--Bookmark question Imageview -->
                 <ImageView
-                    android:layout_width="32dp"
+                    android:layout_width="40dp"
                     android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="4dp"
@@ -74,8 +72,8 @@
 
                 <!--formula and tips Imageview -->
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="40dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="4dp"
                     android:onClick="openTipsAndTricks"
@@ -83,12 +81,11 @@
 
                 <!--Share Question Imageview -->
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                    android:layout_width="40dp"
+                    android:layout_height="32dp"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="4dp"
                     android:onClick="onShareQuestion"
-
                     android:src="@drawable/ic_action_share" />
 
                 <!--Random Number display textview -->

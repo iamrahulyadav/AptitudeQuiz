@@ -5,9 +5,19 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
+import com.facebook.ads.Ad;
+import com.facebook.ads.AdError;
+import com.facebook.ads.AdListener;
+import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdView;
 
 import utils.FireBaseHandler;
 
@@ -17,6 +27,8 @@ public class TipsAndTricksActivity extends AppCompatActivity {
     WebView webView;
 
     ProgressDialog progressDialog;
+    private NativeAd nativeAd;
+    private NativeAd topNativeAd;
 
 
     @Override
@@ -50,6 +62,22 @@ public class TipsAndTricksActivity extends AppCompatActivity {
         downloadTips(mTopicName);
 
 
+        try {
+            Answers.getInstance().logCustom(new CustomEvent("Tips and Tricks").putCustomAttribute("Topic", mTopicName));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            initializeBottomNativeAds();
+            initializeTopNativeAds();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void downloadTips(String mTopicName) {
@@ -84,13 +112,111 @@ public class TipsAndTricksActivity extends AppCompatActivity {
         progressDialog.hide();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+
+    public void initializeBottomNativeAds() {
+
+        if (nativeAd == null) {
+
+            nativeAd = new NativeAd(this, "1510043762404923_1526508060758493");
+            nativeAd.setAdListener(new AdListener() {
+                @Override
+                public void onError(Ad ad, AdError adError) {
+
+                    try {
+                        Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("Placement", "Tips and trick").putCustomAttribute("error", adError.getErrorMessage()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+
+
+                    View adView = NativeAdView.render(TipsAndTricksActivity.this, nativeAd, NativeAdView.Type.HEIGHT_400);
+                    CardView nativeAdContainer = (CardView) findViewById(R.id.tips_adContainer_LinearLayout);
+                    // Add the Native Ad View to your ad container
+                    nativeAdContainer.addView(adView);
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            });
+
+            // Initiate a request to load an ad.
+            nativeAd.loadAd();
+        }
+
+
+    }
+
+    public void initializeTopNativeAds() {
+
+        if (topNativeAd == null) {
+
+            topNativeAd = new NativeAd(this, "1510043762404923_1526511874091445");
+            topNativeAd.setAdListener(new AdListener() {
+                @Override
+                public void onError(Ad ad, AdError adError) {
+
+                    try {
+                        Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("Placement", "Tips and trick").putCustomAttribute("error", adError.getErrorMessage()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onAdLoaded(Ad ad) {
+
+
+                    View adView = NativeAdView.render(TipsAndTricksActivity.this, topNativeAd, NativeAdView.Type.HEIGHT_120);
+                    CardView nativeAdContainer = (CardView) findViewById(R.id.tips_topadContainer_LinearLayout);
+                    // Add the Native Ad View to your ad container
+                    nativeAdContainer.addView(adView);
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            });
+
+            // Initiate a request to load an ad.
+            topNativeAd.loadAd();
+        }
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        FireBaseHandler.removeListener();
+
+        super.onDestroy();
+    }
+
+
+
 }

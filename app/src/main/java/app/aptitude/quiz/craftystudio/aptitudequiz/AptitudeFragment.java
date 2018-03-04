@@ -71,6 +71,8 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
     CardView optionCCardView;
     CardView optionDCardView;
 
+    CardView explainationDisplayCardview;
+
 
     public static AptitudeFragment newInstance(Questions questions, Context context, boolean randomTestOn) {
 
@@ -141,6 +143,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
 
 
         questionExplaination = (TextView) view.findViewById(R.id.question_explaination_textview);
+        explainationDisplayCardview = (CardView) view.findViewById(R.id.question_explaination_cardview);
 
         getUserAnswers();
 
@@ -190,7 +193,7 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
                                 View adView = NativeAdView.render(getContext(), nativeAd, NativeAdView.Type.HEIGHT_300);
                                 // Add the Native Ad View to your ad container
                                 adContainer.addView(adView);
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -226,16 +229,24 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         String correctANswer = questions.getCorrectAnswer().trim();
 
         if (questions.getOptionA().trim().equalsIgnoreCase(correctANswer)) {
-            optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            //optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            optionACardView.setBackgroundResource(R.drawable.mygreenbutton);
+
 
         } else if (questions.getOptionB().trim().equalsIgnoreCase(correctANswer)) {
-            optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            //optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            optionBCardView.setBackgroundResource(R.drawable.mygreenbutton);
+
 
         } else if (questions.getOptionC().trim().equalsIgnoreCase(correctANswer)) {
-            optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            //optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            optionCCardView.setBackgroundResource(R.drawable.mygreenbutton);
+
 
         } else if (questions.getOptionD().trim().equalsIgnoreCase(correctANswer)) {
-            optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            //optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+            optionDCardView.setBackgroundResource(R.drawable.mygreenbutton);
+
         }
     }
 
@@ -271,51 +282,70 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
         //normal topic questions and normal test series
         if (!RandomTestActivity.isRandomTestQuestions) {
 
+
             switch (view.getId()) {
 
                 case R.id.fragmentAptitudeQuiz_optionA_Cardview:
+                    questions.setUserAnswer(questions.getOptionA());
                     if (questions.getOptionA().equalsIgnoreCase(questions.getCorrectAnswer())) {
                         Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
-                        optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        //optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionACardView.setBackgroundResource(R.drawable.mygreenbutton);
 
 
                     } else {
                         // Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
-                        optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        // optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionACardView.setBackgroundResource(R.drawable.myredbutton);
+
                         getRightAnswer();
                     }
                     break;
 
                 case R.id.fragmentAptitudeQuiz_optionB_Cardview:
+                    questions.setUserAnswer(questions.getOptionB());
+
                     if (questions.getOptionB().equalsIgnoreCase(questions.getCorrectAnswer())) {
                         Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
-                        optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        // optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionBCardView.setBackgroundResource(R.drawable.mygreenbutton);
 
                     } else {
                         // Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
-                        optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        // optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionBCardView.setBackgroundResource(R.drawable.myredbutton);
                         getRightAnswer();
                     }
                     break;
                 case R.id.fragmentAptitudeQuiz_optionC_Cardview:
+                    questions.setUserAnswer(questions.getOptionC());
+
                     if (questions.getOptionC().equalsIgnoreCase(questions.getCorrectAnswer())) {
                         Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
-                        optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        // optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionCCardView.setBackgroundResource(R.drawable.mygreenbutton);
 
                     } else {
                         //  Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
-                        optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        // optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionCCardView.setBackgroundResource(R.drawable.myredbutton);
+
                         getRightAnswer();
                     }
                     break;
                 case R.id.fragmentAptitudeQuiz_optionD_Cardview:
+                    questions.setUserAnswer(questions.getOptionD());
+
                     if (questions.getOptionD().equalsIgnoreCase(questions.getCorrectAnswer())) {
                         Toast.makeText(mainActivity, "Right Answer", Toast.LENGTH_SHORT).show();
-                        optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        //optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionDCardView.setBackgroundResource(R.drawable.mygreenbutton);
 
                     } else {
                         // Toast.makeText(mainActivity, "Wrong Answer", Toast.LENGTH_SHORT).show();
-                        optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        // optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionDCardView.setBackgroundResource(R.drawable.myredbutton);
+
                         getRightAnswer();
                     }
                     break;
@@ -327,18 +357,21 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
             }
 
             //setExplaination
+            explainationDisplayCardview.setVisibility(View.VISIBLE);
             questionExplaination.setText(questions.getQuestionExplaination());
 
 
         } else {
+
 
             optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
             optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
             optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
             optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorWhiteBg));
 
-            CardView linearLayout = (CardView) view;
-            linearLayout.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+            CardView testCardview = (CardView) view;
+            //linearLayout.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+            testCardview.setBackgroundResource(R.drawable.mybutton);
 
             switch (view.getId()) {
 
@@ -376,38 +409,49 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
 
 
                 //setExplaination
+                explainationDisplayCardview.setVisibility(View.VISIBLE);
                 questionExplaination.setText(questions.getQuestionExplaination());
 
 
                 if (questions.getUserAnswer().equalsIgnoreCase(questions.getCorrectAnswer())) {
                     if (questions.getOptionA().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        //optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionACardView.setBackgroundResource(R.drawable.mygreenbutton);
+
 
                     } else if (questions.getOptionB().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        //optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionBCardView.setBackgroundResource(R.drawable.mygreenbutton);
 
 
                     } else if (questions.getOptionC().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        // optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionCCardView.setBackgroundResource(R.drawable.mygreenbutton);
 
                     } else if (questions.getOptionD().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        //optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorGreen));
+                        optionDCardView.setBackgroundResource(R.drawable.mygreenbutton);
 
                     }
 
                 } else {
                     if (questions.getOptionA().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        //optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionACardView.setBackgroundResource(R.drawable.myredbutton);
+
 
                     } else if (questions.getOptionB().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        //optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionBCardView.setBackgroundResource(R.drawable.myredbutton);
 
 
                     } else if (questions.getOptionC().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        // optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionCCardView.setBackgroundResource(R.drawable.myredbutton);
 
                     } else if (questions.getOptionD().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                        optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        //optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        optionDCardView.setBackgroundResource(R.drawable.myredbutton);
 
                     }
 
@@ -419,17 +463,21 @@ public class AptitudeFragment extends Fragment implements View.OnClickListener {
             if (questions.getUserAnswer() != null) {
 
                 if (questions.getOptionA().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                    optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    //optionACardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    optionACardView.setBackgroundResource(R.drawable.mybutton);
 
                 } else if (questions.getOptionB().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                    optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    //optionBCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    optionBCardView.setBackgroundResource(R.drawable.mybutton);
 
 
                 } else if (questions.getOptionC().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                    optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    //optionCCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    optionCCardView.setBackgroundResource(R.drawable.mybutton);
 
                 } else if (questions.getOptionD().trim().equalsIgnoreCase(questions.getUserAnswer().trim())) {
-                    optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    //optionDCardView.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorYellow));
+                    optionDCardView.setBackgroundResource(R.drawable.mybutton);
 
                 }
 

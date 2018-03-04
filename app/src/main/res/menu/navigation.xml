@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <item
         android:id="@+id/navigation_topic"
-        android:icon="@drawable/ic_dashboard_black_24dp"
-        android:title="@string/title_dashboard" />
+        android:icon="@drawable/practice"
+        android:title="@string/title_dashboard"
+        app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigation_test_Series"
-        android:icon="@drawable/g4"
-        android:title="@string/title_notifications" />
+        android:icon="@drawable/test"
+        android:title="@string/title_notifications"
+        app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/navigation_daily_quiz"
-        android:icon="@drawable/g6"
-        android:title="@string/title_daily_quiz" />
+        android:icon="@drawable/dailyquiz"
+        android:title="@string/title_daily_quiz"
+        app:showAsAction="always|withText" />
+
 
 </menu>

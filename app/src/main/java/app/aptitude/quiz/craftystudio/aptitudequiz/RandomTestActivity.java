@@ -22,15 +22,19 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,9 +51,12 @@ import com.rm.freedrawview.FreeDrawView;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import utils.ClickListener;
 import utils.FireBaseHandler;
 import utils.Questions;
+import utils.RightNavAdapter;
 import utils.ZoomOutPageTransformer;
 
 public class RandomTestActivity extends AppCompatActivity implements View.OnClickListener {
@@ -77,10 +84,22 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
     TextView mCountDownTimer, displayRightAnswers;
     Questions questions;
 
+    DrawerLayout drawer;
+    ListView questionNameDisplayListview;
+    RightNavAdapter questionNameAdapter;
+    ArrayList<Object> mQuestionsNameList = new ArrayList<>();
+
+
+    TextView mQuestionNumberTextview;
+    TextView mQuestionTimerTextview;
+    long totalSeconds = 1200;
+    long intervalSeconds = 1;
+    CountDownTimer timer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_random_test);
+        setContentView(R.layout.activity_random_test_nav);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -91,6 +110,16 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
+        //side nav view to display question name
+        drawer = (DrawerLayout) findViewById(R.id.drawer_random_activity_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        toggle.setDrawerSlideAnimationEnabled(true);
+
+
         //Bottombar Navigation for refresh,submit,explaination amd share
         BottomNavigationView bottomNavigationView = (BottomNavigationView)
                 findViewById(R.id.randomactivity_navigation);
@@ -99,7 +128,7 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.bottombar_test_refresh:
-                        
+
                         onRefreshTest();
                         break;
 
@@ -118,8 +147,6 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
         mPager = (ViewPager) findViewById(R.id.random_test_activity_viewpager);
         mCountDownTimer = (TextView) findViewById(R.id.randomactivity_countdown_timer);
         displayRightAnswers = (TextView) findViewById(R.id.randomactivity_right_WRONG_answersDIsplay_textview);
-
-
 
 
         //showing EXPLAINATION OF QUESTION USING BOTTOMSHEET
@@ -156,15 +183,96 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
         });
 
 
+        //display question number
+        mQuestionNumberTextview = (TextView) findViewById(R.id.randomactivity_question_number_textview);
+
+        //display timer for each question
+        mQuestionTimerTextview = (TextView) findViewById(R.id.randomactivity_question_timer_textview);
+        timer = new CountDownTimer(totalSeconds * 1000, intervalSeconds * 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                //  Log.d("seconds elapsed: ", (totalSeconds * 1000 - millisUntilFinished) / 1000 + "");
+
+                int seconds = 0, minutes = 0;
+                questions = mQuestionsList.get(mPager.getCurrentItem());
+
+
+                if (questions.getUserAnswer() == null) {
+                    questions.setQuestionTimer(questions.getQuestionTimer() + 1);
+
+                } else {
+
+
+                    //timeElapsed = seconds;
+                }
+                seconds = questions.getQuestionTimer();
+
+                minutes = seconds / 60;
+                seconds = seconds % 60;
+
+                mQuestionTimerTextview.setText(String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+
+
+            }
+
+            public void onFinish() {
+                Log.d("done!", "Time's up!");
+            }
+
+        };
+
+
+        //side nav listview
+        questionNameDisplayListview = (ListView) findViewById(R.id.randomactiity_question_name_display_listview_nav);
+        questionNameDisplayListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mPager.setCurrentItem(i);
+                drawer.closeDrawers();
+                // Toast.makeText(MainActivity.this, mQuestionsNameList.get(i), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         downloadRandomQuestionList();
         initializeViewPager();
 
     }
 
+    private void onAddingQuestionName(ArrayList<Questions> arrayList) {
+        // DIsplay Question Name Right Navigation
+
+
+        // Toast.makeText(this, arrayList.size() + "", Toast.LENGTH_SHORT).show();
+
+        for (int i = 0; i < arrayList.size(); i++) {
+
+            mQuestionsNameList.add(arrayList.get(i).getQuestionName());
+
+        }
+
+        questionNameAdapter = new RightNavAdapter(RandomTestActivity.this, R.layout.custom_right_side_nav, mQuestionsNameList);
+
+        questionNameAdapter.setOnItemCLickListener(new ClickListener() {
+            @Override
+            public void onItemCLickListener(View view, int position) {
+                mPager.setCurrentItem(position);
+                drawer.closeDrawers();
+                // Toast.makeText(MainActivity.this, mQuestionsNameList.get(i), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        questionNameDisplayListview.setAdapter(questionNameAdapter);
+
+
+        //  Toast.makeText(this, mQuestionsNameList.size() + "", Toast.LENGTH_SHORT).show();
+
+    }
+
+
     @Override
     protected void onStop() {
         super.onStop();
-        isRandomTestQuestions=false;
+        isRandomTestQuestions = false;
         FireBaseHandler.removeListener();
     }
 
@@ -177,12 +285,12 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
     public static void showExplaination(Context context) {
 
 
-            behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            try{
-                Answers.getInstance().logCustom(new CustomEvent("Freenotepad").putCustomAttribute("explain",1));
-            }catch(Exception e){
-                e.printStackTrace();
-            }
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        try {
+            Answers.getInstance().logCustom(new CustomEvent("Freenotepad").putCustomAttribute("explain", 1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -247,26 +355,25 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
         wrongAnswer = 10 - rightAnswer;
 
-        try{
-        AlertDialog.Builder builder = new AlertDialog.Builder(RandomTestActivity.this);
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(RandomTestActivity.this);
 
-        builder.setMessage("Right Answers = " + rightAnswer + " \n\n Wrong Answers = " + wrongAnswer)
-                .setTitle("Results");
+            builder.setMessage("Right Answers = " + rightAnswer + " \n\n Wrong Answers = " + wrongAnswer)
+                    .setTitle("Results");
 
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-                dialog.dismiss();
-            }
-        });
-        final AlertDialog mydialog = builder.create();
-        //   mydialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize(16);
-        mydialog.show();
+            builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    dialog.dismiss();
+                }
+            });
+            final AlertDialog mydialog = builder.create();
+            //   mydialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextSize(16);
+            mydialog.show();
 
 
-
-            Answers.getInstance().logCustom(new CustomEvent("Test submitted").putCustomAttribute("score",rightAnswer));
-        }catch(Exception e){
+            Answers.getInstance().logCustom(new CustomEvent("Test submitted").putCustomAttribute("score", rightAnswer));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -291,6 +398,8 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onPageSelected(int position) {
+
+                mQuestionNumberTextview.setText("Question " + (position + 1));
 
                 //checkInterstitialAds();
             }
@@ -414,6 +523,10 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
                     }.start();
 
 
+                    //adding question name in side nav
+                    onAddingQuestionName(questionList);
+
+                    timer.start();
                 } else {
                     //  openConnectionFailureDialog();
                 }
@@ -439,7 +552,7 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
     public void hideDialog() {
         try {
             progressDialog.cancel();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -506,9 +619,9 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
         startActivity(Intent.createChooser(sharingIntent, "Share Aptitude Question via"));
         hideDialog();
 
-        try{
-            Answers.getInstance().logCustom(new CustomEvent("Share question").putCustomAttribute("question",questions.getQuestionName()).putCustomAttribute("question topic",questions.getQuestionTopicName()));
-        }catch(Exception e){
+        try {
+            Answers.getInstance().logCustom(new CustomEvent("Share question").putCustomAttribute("question", questions.getQuestionName()).putCustomAttribute("question topic", questions.getQuestionTopicName()));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

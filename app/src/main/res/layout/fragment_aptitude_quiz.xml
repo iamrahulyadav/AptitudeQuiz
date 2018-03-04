@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorWhitish">
 
 
     <android.support.v4.widget.NestedScrollView
@@ -16,98 +16,77 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <!--Title,previous years -->
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/colorWhiteBg"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="2dp">
 
-                <!--Title,previous years -->
-                <android.support.v7.widget.CardView
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:cardBackgroundColor="@color/colorPrimary"
-                    app:cardCornerRadius="0dp"
-                    app:cardElevation="0dp">
+                    android:layout_margin="12dp"
+                    android:orientation="vertical">
 
-
-                    <!--Old Cardview for item holding -->
-                    <android.support.v7.widget.CardView
-                        android:id="@+id/fragmentAptitudeQuiz_MainItemHolder_Cardview"
+                    <TextView
+                        android:id="@+id/fragmentAptitudeQuiz_questionTimer_Textview"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="8dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:text="00:00"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/colorBlackish"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/fragmentAptitudeQuiz_QuestionName_Textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="0dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
-                        android:layout_marginTop="20dp"
-                        android:visibility="gone"
-                        app:cardCornerRadius="4dp"
-                        app:cardElevation="6dp">
+                        android:layout_marginTop="4dp"
+                        android:lineSpacingExtra=".9sp"
+                        android:text="Title"
+                        android:textColor="@color/colorBlack"
+                        android:textIsSelectable="true"
+                        android:textSize="16sp"
+                        android:textStyle="normal" />
 
-
-                    </android.support.v7.widget.CardView>
-
-                    <LinearLayout
+                    <!--Previous year textview -->
+                    <TextView
+                        android:id="@+id/fragmentAptitudeQuiz_previousYearName_Textview"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Question"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorLightWhiteBg" />
-
-                        <TextView
-                            android:id="@+id/fragmentAptitudeQuiz_QuestionName_Textview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginTop="4dp"
-                            android:lineSpacingExtra=".9sp"
-                            android:text="Title"
-                            android:textColor="@color/colorMainText"
-                            android:textIsSelectable="true"
-                            android:textSize="16sp"
-                            android:textStyle="normal" />
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_weight="1"
+                        android:text=" Previous Year Name"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/colorBlackish"
+                        android:textSize="12sp"
+                        android:visibility="visible" />
 
 
-                        <!--Previous year textview -->
-                        <TextView
-                            android:id="@+id/fragmentAptitudeQuiz_previousYearName_Textview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp"
-                            android:layout_marginLeft="20dp"
-                            android:layout_marginRight="20dp"
-                            android:layout_marginTop="4dp"
-                            android:layout_weight="1"
-                            android:text=" Previous Year Name"
-                            android:textAlignment="textEnd"
-                            android:textColor="@color/colorLightWhiteBg"
-                            android:textSize="12sp"
-                            android:visibility="visible" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
 
-                    </LinearLayout>
-
-
-                </android.support.v7.widget.CardView>
-
-
-            </LinearLayout>
-
-            <!--Options cardview -->
+            <!--O8tions cardview -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
                 android:layout_marginTop="16dp"
                 android:orientation="vertical">
 
@@ -121,20 +100,40 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="8dp"
                     android:orientation="vertical"
-                    app:cardBackgroundColor="@color/colorWhiteBg">
+                    app:cardBackgroundColor="@color/colorWhiteBg"
+                    app:cardElevation="1dp">
 
-                    <TextView
-                        android:id="@+id/fragmentAptitudeQuiz_optionA_Textview"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Option A"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"
-                        android:textStyle="normal" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginTop="16dp"
+                            android:text="1."
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/fragmentAptitudeQuiz_optionA_Textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Option A"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="18sp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
 
                 </android.support.v7.widget.CardView>
 
@@ -148,22 +147,43 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="4dp"
                     android:orientation="vertical"
-                    app:cardBackgroundColor="@color/colorWhiteBg">
+                    app:cardBackgroundColor="@color/colorWhiteBg"
+                    app:cardElevation="1dp">
 
-                    <TextView
-                        android:id="@+id/fragmentAptitudeQuiz_optionB_Textview"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Option B"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"
-                        android:textStyle="normal"
+                        android:orientation="horizontal">
 
-                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginTop="16dp"
+                            android:text="2."
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/fragmentAptitudeQuiz_optionB_Textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Option B"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="18sp"
+                            android:textStyle="normal"
+
+                            />
+                    </LinearLayout>
+
+
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
@@ -178,22 +198,43 @@
                     android:orientation="vertical"
                     android:textAlignment="center"
 
-                    app:cardBackgroundColor="@color/colorWhiteBg">
+                    app:cardBackgroundColor="@color/colorWhiteBg"
+                    app:cardElevation="1dp">
 
-                    <TextView
-                        android:id="@+id/fragmentAptitudeQuiz_optionC_Textview"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Option C"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"
-                        android:textStyle="normal"
+                        android:orientation="horizontal">
 
-                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginTop="16dp"
+                            android:text="3."
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/fragmentAptitudeQuiz_optionC_Textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Option C"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="18sp"
+                            android:textStyle="normal"
+
+                            />
+                    </LinearLayout>
+
+
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
@@ -205,42 +246,108 @@
                     android:layout_marginRight="4dp"
                     android:layout_marginTop="4dp"
                     android:orientation="vertical"
-                    app:cardBackgroundColor="@color/colorWhiteBg">
+                    app:cardBackgroundColor="@color/colorWhiteBg"
+                    app:cardElevation="1dp">
 
-                    <TextView
-                        android:id="@+id/fragmentAptitudeQuiz_optionD_Textview"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Option D"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="18sp"
-                        android:textStyle="normal"
+                        android:orientation="horizontal">
 
-                        />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginTop="16dp"
+                            android:text="4."
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/fragmentAptitudeQuiz_optionD_Textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_marginTop="16dp"
+                            android:text="Option D"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="18sp"
+                            android:textStyle="normal"
+
+                            />
+                    </LinearLayout>
+
 
                 </android.support.v7.widget.CardView>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/question_explaination_textview"
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/question_explaination_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="2dp"
-                android:lineSpacingExtra="2sp"
-                android:text=""
-                android:textColor="@color/colorMainText"
-                android:textIsSelectable="true"
-                android:textSize="16sp"
-                android:textStyle="normal"
-                android:visibility="visible" />
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/colorWhiteBg"
+                app:cardCornerRadius="0dp"
+                app:cardElevation="2dp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:text="Explaination : "
+                        android:textAlignment="textStart"
+                        android:textColor="@color/colorBlackish"
+                        android:textStyle="italic"
+                        android:visibility="visible" />
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginTop="2dp"
+                        app:cardBackgroundColor="@color/colorBlackish"
+                        app:cardCornerRadius="0dp"
+                        app:cardElevation="0dp"></android.support.v7.widget.CardView>
+
+                    <!--Explaination Textvew-->
+                    <TextView
+                        android:id="@+id/question_explaination_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="4dp"
+                        android:lineSpacingExtra="2sp"
+                        android:text=""
+                        android:textColor="@color/colorBlack"
+                        android:textIsSelectable="true"
+                        android:textSize="16sp"
+                        android:textStyle="normal"
+                        android:visibility="visible" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
 
             <!--Native ads-->
             <android.support.v7.widget.CardView

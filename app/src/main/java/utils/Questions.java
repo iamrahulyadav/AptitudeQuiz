@@ -34,6 +34,18 @@ public class Questions implements Serializable {
     private String questionTopicName;
     private String questionTestName;
     private String previousYearsName;
+    private String questionUID;
+    private int questionTimer;
+
+
+    public int getQuestionTimer() {
+        return questionTimer;
+    }
+
+    public void setQuestionTimer(int questionTimer) {
+        this.questionTimer = questionTimer;
+    }
+
 
     public String getUserAnswer() {
         return userAnswer;
@@ -53,7 +65,6 @@ public class Questions implements Serializable {
         this.questionUID = questionUID;
     }
 
-    private String questionUID;
 
     public String getQuestionTopicName() {
         return questionTopicName;

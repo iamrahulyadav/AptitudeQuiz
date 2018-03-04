@@ -153,6 +153,75 @@ public class FireBaseHandler {
 
     }
 
+    public void uploadSamplePaperName(final String samplePaper, final OnTestSerieslistener onTestSerieslistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("SamplePapers/");
+
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("SamplePapers/" + mDatabaseRef.push().getKey());
+
+
+        mDatabaseRef1.setValue(samplePaper).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onTestSerieslistener.onTestDownLoad(samplePaper, true);
+                onTestSerieslistener.onTestUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Fail UploadSamplename", e.getMessage());
+
+                onTestSerieslistener.onTestUpload(false);
+                onTestSerieslistener.onTestDownLoad(null, false);
+            }
+        });
+
+
+    }
+
+    public void downloadSamplePaperList(int limit, final OnTestSerieslistener onTestSerieslistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("SamplePapers/");
+
+        Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> samplePaperArrayList = new ArrayList<String>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String test = snapshot.getValue(String.class);
+                    if (test != null) {
+                        samplePaperArrayList.add(test);
+
+                    }
+                }
+
+                Collections.reverse(samplePaperArrayList);
+
+                onTestSerieslistener.onTestListDownLoad(samplePaperArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTestSerieslistener.onTestListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
 
     public void downloadDateList(int limit, final OnTestSerieslistener onTestSerieslistener) {
 
@@ -294,6 +363,296 @@ public class FireBaseHandler {
         });
 
         valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+    public void downloadVerbalTopicList(int limit, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("Verbal/Topic/");
+
+        Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> verbalTopicArrayList = new ArrayList<String>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String topic = snapshot.getValue(String.class);
+                    if (topic != null) {
+                        verbalTopicArrayList.add(topic);
+
+                    }
+                }
+
+                Collections.reverse(verbalTopicArrayList);
+
+                onTopiclistener.onTopicListDownLoad(verbalTopicArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTopiclistener.onTopicListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+    public void uploadVerbalQuestion(final Questions questions, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("Verbal/Questions/");
+
+        questions.setQuestionUID(mDatabaseRef.push().getKey());
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Verbal/Questions/" + questions.getQuestionUID());
+
+
+        mDatabaseRef1.setValue(questions).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onQuestionlistener.onQuestionDownLoad(questions, true);
+                onQuestionlistener.onQuestionUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onQuestionlistener.onQuestionUpload(false);
+                onQuestionlistener.onQuestionDownLoad(null, false);
+            }
+        });
+
+
+    }
+
+    public void downloadVerbalQuestionList(int limit, String topicName, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("Verbal/Questions/");
+
+        Query myref2 = mDatabaseRef.orderByChild("questionTopicName").equalTo(topicName).limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Questions> questionsArrayList = new ArrayList<Questions>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    Questions questions = snapshot.getValue(Questions.class);
+                    if (questions != null) {
+
+                        questions.setQuestionUID(snapshot.getKey());
+
+                    }
+                    questionsArrayList.add(questions);
+                }
+
+                Collections.reverse(questionsArrayList);
+
+                onQuestionlistener.onQuestionListDownLoad(questionsArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onQuestionlistener.onQuestionListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+    public void uploadVerbalTopicName(final String topic, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("Verbal/Topic/");
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Verbal/Topic/" + mDatabaseRef.push().getKey());
+
+        //DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Topic/");
+
+
+        mDatabaseRef1.setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onTopiclistener.onTopicDownLoad(topic, true);
+                onTopiclistener.onTopicUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onTopiclistener.onTopicUpload(false);
+                onTopiclistener.onTopicDownLoad(null, false);
+            }
+        });
+
+
+    }
+
+    public void downloadDITopicList(int limit, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("DI/Topic/");
+
+        Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> mDITopicArrayList = new ArrayList<String>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String topic = snapshot.getValue(String.class);
+                    if (topic != null) {
+                        mDITopicArrayList.add(topic);
+
+                    }
+                }
+
+                Collections.reverse(mDITopicArrayList);
+
+                onTopiclistener.onTopicListDownLoad(mDITopicArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTopiclistener.onTopicListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+    public void downloadDIQuestionList(int limit, String topicName, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("DI/Questions/");
+
+        Query myref2 = mDatabaseRef.orderByChild("questionTopicName").equalTo(topicName).limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Questions> questionsArrayList = new ArrayList<Questions>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    Questions questions = snapshot.getValue(Questions.class);
+                    if (questions != null) {
+
+                        questions.setQuestionUID(snapshot.getKey());
+
+                    }
+                    questionsArrayList.add(questions);
+                }
+
+                Collections.reverse(questionsArrayList);
+
+                onQuestionlistener.onQuestionListDownLoad(questionsArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onQuestionlistener.onQuestionListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+    public void uploadDITopicName(final String topic, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("DI/Topic/");
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("DI/Topic/" + mDatabaseRef.push().getKey());
+
+        //DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Topic/");
+
+
+        mDatabaseRef1.setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onTopiclistener.onTopicDownLoad(topic, true);
+                onTopiclistener.onTopicUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onTopiclistener.onTopicUpload(false);
+                onTopiclistener.onTopicDownLoad(null, false);
+            }
+        });
+
+
+    }
+
+    public void uploadDIQuestion(final Questions questions, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("DI/Questions/");
+
+        questions.setQuestionUID(mDatabaseRef.push().getKey());
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("DI/Questions/" + questions.getQuestionUID());
+
+
+        mDatabaseRef1.setValue(questions).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onQuestionlistener.onQuestionDownLoad(questions, true);
+                onQuestionlistener.onQuestionUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onQuestionlistener.onQuestionUpload(false);
+                onQuestionlistener.onQuestionDownLoad(null, false);
+            }
+        });
 
 
     }
@@ -555,7 +914,7 @@ public class FireBaseHandler {
 
     }
 
-      public void downloadQuestionList(int limit, String testName, final OnQuestionlistener onQuestionlistener) {
+    public void downloadQuestionList(int limit, String testName, final OnQuestionlistener onQuestionlistener) {
 
 
         mDatabaseRef = mFirebaseDatabase.getReference().child("Questions/");

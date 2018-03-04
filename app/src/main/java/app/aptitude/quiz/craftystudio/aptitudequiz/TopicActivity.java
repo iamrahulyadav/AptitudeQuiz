@@ -1,17 +1,22 @@
 package app.aptitude.quiz.craftystudio.aptitudequiz;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +26,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,6 +56,7 @@ import java.util.ArrayList;
 import utils.AppRater;
 import utils.ClickListener;
 import utils.FireBaseHandler;
+import utils.Questions;
 import utils.TopicListAdapter;
 
 public class TopicActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -66,6 +74,8 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
     private LinearLayout linearLayout;
 
     AdView adView;
+
+    TabLayout tabLayout;
 
 
     @Override
@@ -117,13 +127,72 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         mArraylist = new ArrayList<>();
         topicAndTestListview = (ListView) findViewById(R.id.topicActivity_topic_listview);
 
+        //adding tablayout
+        tabLayout = (TabLayout) findViewById(R.id.practice_tabs);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Aptitude"));
+        tabLayout.addTab(tabLayout.newTab().setText("Verbal"));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                //Toast.makeText(TopicActivity.this, tab.getText(), Toast.LENGTH_SHORT).show();
+
+                if (tab.getText() == "Aptitude") {
+
+                    /*
+                    FireBaseHandler fireBaseHandler = new FireBaseHandler();
+                    fireBaseHandler.uploadVerbalTopicName("Synonyms", new FireBaseHandler.OnTopiclistener() {
+                        @Override
+                        public void onTopicDownLoad(String topic, boolean isSuccessful) {
+
+                        }
+
+                        @Override
+                        public void onTopicListDownLoad(ArrayList<String> topicList, boolean isSuccessful) {
+
+                        }
+
+                        @Override
+                        public void onTopicUpload(boolean isSuccessful) {
+
+                            if (isSuccessful)
+                                Toast.makeText(TopicActivity.this, "Topic uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    */
+                    downloadTopicList();
+
+                } else if (tab.getText() == "Verbal") {
+
+                    downloadVerbalTopicList();
+
+                } else if (tab.getText() == "Sample Paper") {
+                    downloadSamplePaperList();
+                   // Toast.makeText(TopicActivity.this, "Sample", Toast.LENGTH_SHORT).show();
+                } else if (tab.getText() == "Previous Paper") {
+                    downloadTestList();
+                    //Toast.makeText(TopicActivity.this, "Previous ", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         //calling rate now dialog
-
         AppRater.app_launched(TopicActivity.this);
 
 
-        //download list of Topics
+        //download list of Aptitude Topics
         showDialog("Loading...Please wait");
         downloadTopicList();
 
@@ -132,6 +201,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         setListViewHeader();
 
     }
+
 
     private void setListViewHeader() {
 
@@ -143,7 +213,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         TextView topicNameTextview = (TextView) footerView.findViewById(R.id.custom_textview);
         topicNameTextview.setText("Take Test");
-        topicNameTextview.setTextColor(Color.parseColor("#FFFFFF"));
+        topicNameTextview.setTextColor(Color.parseColor("#000000"));
 
         CardView cardView = (CardView) footerView.findViewById(R.id.custom_background_cardView);
         cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -239,15 +309,22 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             switch (item.getItemId()) {
                 case R.id.navigation_topic:
                     downloadTopicList();
+                    downloadTopicTab();
+                    tabLayout.setVisibility(View.VISIBLE);
                     return true;
 
                 case R.id.navigation_daily_quiz:
+                    tabLayout.setVisibility(View.GONE);
                     downloadDateList();
                     return true;
 
                 case R.id.navigation_test_Series:
+                    tabLayout.setVisibility(View.GONE);
                     downloadTestList();
-                    return true;
+
+                    //downloadSamplePaperList();
+                    //downloadTestTab();
+                     return true;
 
 
             }
@@ -348,8 +425,6 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     }
 
-
-
     public void uploadTopicName() {
         FireBaseHandler fireBaseHandler = new FireBaseHandler();
         fireBaseHandler.uploadTopicName("Time and Work", new FireBaseHandler.OnTopiclistener() {
@@ -397,6 +472,19 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         });
     }
 
+    public void downloadTestTab() {
+        tabLayout.removeAllTabs();
+        tabLayout.addTab(tabLayout.newTab().setText("Sample Paper"));
+        tabLayout.addTab(tabLayout.newTab().setText("Previous Paper"));
+
+    }
+
+    public void downloadTopicTab() {
+        tabLayout.removeAllTabs();
+        tabLayout.addTab(tabLayout.newTab().setText("Aptitude"));
+        tabLayout.addTab(tabLayout.newTab().setText("Verbal"));
+
+    }
 
     public void downloadDateList() {
         fireBaseHandler.downloadDateList(15, new FireBaseHandler.OnTestSerieslistener() {
@@ -424,7 +512,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                         public void onItemCLickListener(View view, int position) {
                             TextView textview = (TextView) view;
                             if (check == 1) {
-                                openMainActivity(1, textview.getText().toString(), null);
+                                openMainActivity(check, textview.getText().toString(), null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
                                 try {
@@ -487,7 +575,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                         public void onItemCLickListener(View view, int position) {
                             TextView textview = (TextView) view;
                             if (check == 1) {
-                                openMainActivity(1, textview.getText().toString(), null);
+                                openMainActivity(check, textview.getText().toString(), null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
                                 try {
@@ -508,7 +596,125 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     });
 
 
-                    hideDialog();
+                }
+                hideDialog();
+
+            }
+
+            @Override
+            public void onTestUpload(boolean isSuccessful) {
+
+            }
+        });
+    }
+
+    public void downloadVerbalTopicList() {
+        fireBaseHandler.downloadVerbalTopicList(30, new FireBaseHandler.OnTopiclistener() {
+            @Override
+            public void onTopicDownLoad(String topic, boolean isSuccessful) {
+
+            }
+
+            @Override
+            public void onTopicListDownLoad(ArrayList<String> topicList, boolean isSuccessful) {
+                if (isSuccessful) {
+                    // Toast.makeText(TopicActivity.this, "size is " + testList.size(), Toast.LENGTH_SHORT).show();
+                    //mArraylist = testList;
+
+                    mArraylist.clear();
+
+                    for (Object name : topicList) {
+                        mArraylist.add(name);
+                    }
+
+                    check = 2;
+                    adapter = new TopicListAdapter(getApplicationContext(), R.layout.custom_textview, mArraylist);
+
+                    adapter.setOnItemCLickListener(new ClickListener() {
+                        @Override
+                        public void onItemCLickListener(View view, int position) {
+                            TextView textview = (TextView) view;
+                            if (check == 2) {
+                                openMainActivity(check, textview.getText().toString(), null);
+                                //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    Answers.getInstance().logCustom(new CustomEvent("Verbal List open").putCustomAttribute("Verbal topic name", textview.getText().toString()));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+                    });
+
+
+                    topicAndTestListview.post(new Runnable() {
+                        public void run() {
+                            topicAndTestListview.setAdapter(adapter);
+                        }
+                    });
+
+
+                }
+                hideDialog();
+            }
+
+            @Override
+            public void onTopicUpload(boolean isSuccessful) {
+
+            }
+        });
+    }
+
+    public void downloadSamplePaperList() {
+        fireBaseHandler.downloadSamplePaperList(30, new FireBaseHandler.OnTestSerieslistener() {
+            @Override
+            public void onTestDownLoad(String test, boolean isSuccessful) {
+
+            }
+
+            @Override
+            public void onTestListDownLoad(ArrayList<String> testList, boolean isSuccessful) {
+
+                if (isSuccessful) {
+                    // Toast.makeText(TopicActivity.this, "size is " + testList.size(), Toast.LENGTH_SHORT).show();
+                    //mArraylist = testList;
+
+                    mArraylist.clear();
+
+                    for (Object name : testList) {
+                        mArraylist.add(name);
+                    }
+
+                    check = 1;
+                    adapter = new TopicListAdapter(getApplicationContext(), R.layout.custom_textview, mArraylist);
+
+                    adapter.setOnItemCLickListener(new ClickListener() {
+                        @Override
+                        public void onItemCLickListener(View view, int position) {
+                            TextView textview = (TextView) view;
+                            if (check == 1) {
+                                openMainActivity(check, textview.getText().toString(), null);
+                                //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
+
+                                try {
+                                    Answers.getInstance().logCustom(new CustomEvent("Sample Paper list open").putCustomAttribute("Sample Paper", textview.getText().toString()));
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+                    });
+
+
+                    topicAndTestListview.post(new Runnable() {
+                        public void run() {
+                            topicAndTestListview.setAdapter(adapter);
+                        }
+                    });
+
 
                 }
                 hideDialog();
@@ -521,6 +727,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             }
         });
     }
+
 
     public void openMainActivity(int check, String Text, String questionUID) {
 
@@ -585,8 +792,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             Intent intent = new Intent(TopicActivity.this, RandomTestActivity.class);
             startActivity(intent);
 
-            // Handle the camera action
-        } else if (id == R.id.nav_bookmark) {
+         } else if (id == R.id.nav_bookmark) {
 
             Intent intent = new Intent(TopicActivity.this, BookmarkActivity.class);
             startActivity(intent);
@@ -614,6 +820,8 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         } else if (id == R.id.nav_rate) {
             onRateUs();
         } else if (id == R.id.nav_logical_reasoning) {
+
+
             onLogicalReasoningClick();
         } else if (id == R.id.nav_personality_development) {
             onPersonalityDevelopment();
@@ -625,6 +833,12 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             onBasicComputerClick();
         } else if ((id == R.id.nav_short_key)) {
             onShortKeyClick();
+        } else if ((id == R.id.nav_English_grammar)) {
+            onEnglishGrammarClick();
+        } else if ((id == R.id.nav_idioms_phrases)) {
+            onIdiomsAndPhrasesClick();
+        } else if ((id == R.id.nav_Current_affair)) {
+            onCurrentAffairsClick();
         }
 
 
@@ -664,6 +878,42 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
 
             Answers.getInstance().logCustom(new CustomEvent("ShortKey CLick"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onCurrentAffairsClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=gk.affairs.current.craftystudio.app.currentaffairs";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("Current Affairs CLick"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onIdiomsAndPhrasesClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.craftystudio.phrases.idiom.idiomsandphrases";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("Idioms and Phrases CLick"));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onEnglishGrammarClick() {
+        try {
+            String link = "https://play.google.com/store/apps/details?id=app.english.grammar.craftystudio.englishgrammar";
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(link)));
+
+            Answers.getInstance().logCustom(new CustomEvent("English Grammar CLick"));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -759,4 +1009,6 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         //initializeActivity();
     }
+
+
 }

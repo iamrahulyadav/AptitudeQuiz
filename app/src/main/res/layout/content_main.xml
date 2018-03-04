@@ -12,20 +12,21 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorWhitish"
         android:orientation="vertical"
         android:weightSum="1">
 
         <!--Topic name -->
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            app:cardBackgroundColor="@color/colorPrimary"
             app:cardCornerRadius="0dp"
             app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginBottom="0dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
@@ -38,22 +39,23 @@
                 <TextView
                     android:id="@+id/fragmentAptitudeQuiz_topicName_Textview"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_gravity="center"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:text="Topic Name"
-                    android:textAlignment="center"
                     android:textColor="@color/colorWhiteBg"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <!--Free notepad Imageview -->
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="4dp"
+                    android:layout_margin="6dp"
                     android:onClick="onShowNotePad"
                     android:src="@mipmap/ic_freenote"
 
@@ -61,10 +63,10 @@
 
                 <!--Bookmark question Imageview -->
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="32dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="4dp"
+                    android:layout_margin="6dp"
                     android:onClick="onBookMarkQuestion"
                     android:src="@drawable/ic_action_bookmark"
 
@@ -72,21 +74,30 @@
 
                 <!--formula and tips Imageview -->
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="4dp"
+                    android:layout_margin="6dp"
                     android:onClick="openTipsAndTricks"
                     android:src="@drawable/g3" />
 
                 <!--Share Question Imageview -->
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_margin="4dp"
+                    android:layout_margin="6dp"
                     android:onClick="onShareQuestion"
                     android:src="@drawable/ic_action_share" />
+
+                <!--Open right nav Imageview -->
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="6dp"
+                    android:onClick="onOpenRightNav"
+                    android:src="@drawable/right_menu" />
 
                 <!--Random Number display textview -->
                 <TextView
@@ -112,14 +123,43 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            app:cardBackgroundColor="@color/colorWhiteBg"></android.support.v7.widget.CardView>
+            app:cardBackgroundColor="@color/colorLightWhiteBg"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp">
+
+        </android.support.v7.widget.CardView>
+
+
+        <TextView
+            android:id="@+id/fragmentAptitudeQuiz_questionNumber_Textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:text="Question 1"
+            android:textAlignment="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:textStyle="normal" />
+
+
+        <TextView
+            android:id="@+id/fragmentAptitudeQuiz_question_timer_Textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="00:00"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorBlackish"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="visible" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/mainActivity_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorWhitish"
             android:visibility="visible">
 
         </android.support.v4.view.ViewPager>
@@ -131,8 +171,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorWhitish"
             android:visibility="gone"
+            android:elevation="4dp"
             app:itemIconTint="@color/colorWhiteBg"
             app:itemTextColor="@color/colorWhiteBg"
             app:menu="@menu/bottombar_mainactivity_menu" />

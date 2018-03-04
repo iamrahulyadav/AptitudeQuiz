@@ -49,11 +49,22 @@
         <menu>
 
             <item
+                android:id="@+id/nav_English_grammar"
+                android:title="English Grammar Master" />
+            <item
+                android:id="@+id/nav_Current_affair"
+                android:title="Current Affair App" />
+
+            <item
+                android:id="@+id/nav_idioms_phrases"
+                android:title="Idioms and Phrases App" />
+
+            <item
                 android:id="@+id/nav_basic_Computer"
                 android:title="🖥 Basic Computer App" />
             <item
                 android:id="@+id/nav_short_key"
-                android:title="⌨️ Computer Short Keys" />
+                android:title="⌨ Computer Short Keys" />
 
             <item
                 android:id="@+id/nav_personality_development"

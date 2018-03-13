@@ -18,6 +18,9 @@ import com.facebook.ads.AdError;
 import com.facebook.ads.AdListener;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import utils.FireBaseHandler;
 
@@ -129,6 +132,7 @@ public class TipsAndTricksActivity extends AppCompatActivity {
                 public void onError(Ad ad, AdError adError) {
 
                     try {
+                        initializeAdmob();
                         Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("Placement", "Tips and trick").putCustomAttribute("error", adError.getErrorMessage()));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -164,6 +168,23 @@ public class TipsAndTricksActivity extends AppCompatActivity {
 
     }
 
+
+    private void initializeAdmob() {
+
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.MEDIUM_RECTANGLE);
+        adView.setAdUnitId("ca-app-pub-8455191357100024/3421218302");
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        CardView nativeAdContainer = findViewById(R.id.tips_adContainer_LinearLayout);
+        nativeAdContainer.removeAllViews();
+        nativeAdContainer.addView(adView);
+
+
+    }
+
     public void initializeTopNativeAds() {
 
         if (topNativeAd == null) {
@@ -173,7 +194,9 @@ public class TipsAndTricksActivity extends AppCompatActivity {
                 @Override
                 public void onError(Ad ad, AdError adError) {
 
+
                     try {
+                        initializeTopAdmob();
                         Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("Placement", "Tips and trick").putCustomAttribute("error", adError.getErrorMessage()));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -208,6 +231,21 @@ public class TipsAndTricksActivity extends AppCompatActivity {
 
 
     }
+
+    private void initializeTopAdmob() {
+
+        AdView adView = new AdView(this);
+        adView.setAdSize(AdSize.LARGE_BANNER);
+        adView.setAdUnitId("ca-app-pub-8455191357100024/3421218302");
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+        CardView nativeAdContainer = findViewById(R.id.tips_topadContainer_LinearLayout);
+        nativeAdContainer.removeAllViews();
+        nativeAdContainer.addView(adView);
+    }
+
 
     @Override
     protected void onDestroy() {

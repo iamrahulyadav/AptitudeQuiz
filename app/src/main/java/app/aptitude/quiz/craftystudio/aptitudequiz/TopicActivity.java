@@ -43,6 +43,8 @@ import com.facebook.ads.AdSize;
 import com.facebook.ads.AdView;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
@@ -86,6 +88,9 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_topic);
         setSupportActionBar(toolbar);
+
+        MobileAds.initialize(this, "ca-app-pub-8455191357100024~5546131845");
+
 
         fireBaseHandler = new FireBaseHandler();
         openDynamicLink();
@@ -205,88 +210,115 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
     private void setListViewHeader() {
 
-        linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        topicAndTestListview.addHeaderView(linearLayout);
+        try {
+            linearLayout = new LinearLayout(this);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            topicAndTestListview.addHeaderView(linearLayout);
 
-        final View footerView = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+            final View footerView = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
 
-        TextView topicNameTextview = (TextView) footerView.findViewById(R.id.custom_textview);
-        topicNameTextview.setText("Take Test");
-        topicNameTextview.setTextColor(Color.parseColor("#000000"));
-
-        CardView cardView = (CardView) footerView.findViewById(R.id.custom_background_cardView);
-        cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-        footerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openRandomTestActivity(footerView);
-            }
-        });
-
-        linearLayout.addView(footerView);
+            TextView topicNameTextview = (TextView) footerView.findViewById(R.id.custom_textview);
+            topicNameTextview.setText("Take Test");
+            topicNameTextview.setTextColor(Color.parseColor("#000000"));
 
 
-        // Instantiate an AdView view
-        adView = new AdView(this, "1510043762404923_1510291979046768", AdSize.BANNER_HEIGHT_50);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                try {
-                    Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement", "banner"));
-                } catch (Exception e) {
-                    e.printStackTrace();
+            footerView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openRandomTestActivity(footerView);
                 }
-            }
+            });
 
-            @Override
-            public void onAdLoaded(Ad ad) {
-
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-
-            }
-        });
-
-        View headerAdView = ((LayoutInflater) TopicActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+            linearLayout.addView(footerView);
 
 
-        CardView cardAdView = (CardView) headerAdView.findViewById(R.id.custom_background_cardView);
-        cardAdView.removeAllViews();
-        cardAdView.addView(adView);
+            // Instantiate an AdView view
+            adView = new AdView(this, "1510043762404923_1510291979046768", AdSize.BANNER_HEIGHT_50);
+            adView.setAdListener(new AdListener() {
+                @Override
+                public void onError(Ad ad, AdError adError) {
+                    try {
+                        Answers.getInstance().logCustom(new CustomEvent("Ad failed").putCustomAttribute("message", adError.getErrorMessage()).putCustomAttribute("Placement", "banner"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
-        adView.loadAd();
+                @Override
+                public void onAdLoaded(Ad ad) {
 
-        linearLayout.addView(headerAdView);
+                }
+
+                @Override
+                public void onAdClicked(Ad ad) {
+
+                }
+
+                @Override
+                public void onLoggingImpression(Ad ad) {
+
+                }
+            });
+
+            View headerAdView = ((LayoutInflater) TopicActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+
+
+            LinearLayout cardAdView = headerAdView.findViewById(R.id.custom_background_linearLayout);
+            cardAdView.removeAllViews();
+            cardAdView.addView(adView);
+
+            adView.loadAd();
+
+            linearLayout.addView(headerAdView);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
     }
 
     private void setListViewFooter() {
-        View footerView = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
 
-        TextView topicNameTextview = (TextView) footerView.findViewById(R.id.custom_textview);
-        topicNameTextview.setText("Logical Reasoning Master");
-        topicNameTextview.setTextColor(Color.parseColor("#FFFFFF"));
+        try {
+            LinearLayout footerLinearLayout = new LinearLayout(this);
+            footerLinearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        CardView cardView = (CardView) footerView.findViewById(R.id.custom_background_cardView);
-        cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
 
-        footerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLogicalReasoningClick();
-            }
-        });
-        topicAndTestListview.addFooterView(footerView);
+            com.google.android.gms.ads.AdView adView = new com.google.android.gms.ads.AdView(this);
+            adView.setAdSize(com.google.android.gms.ads.AdSize.BANNER);
+            adView.setAdUnitId("ca-app-pub-8455191357100024/5903911411");
+
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adView.loadAd(adRequest);
+
+            View footerAdView = ((LayoutInflater) TopicActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+
+            LinearLayout cardAdView = footerAdView.findViewById(R.id.custom_background_linearLayout);
+            cardAdView.removeAllViews();
+            cardAdView.addView(adView);
+
+            footerLinearLayout.addView(footerAdView);
+
+            View footerView = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_textview, null, false);
+
+            TextView topicNameTextview = (TextView) footerView.findViewById(R.id.custom_textview);
+            topicNameTextview.setText("Logical Reasoning Master");
+            topicNameTextview.setTextColor(getResources().getColor(R.color.colorRed));
+
+
+            footerView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onLogicalReasoningClick();
+                }
+            });
+
+            footerLinearLayout.addView(footerView);
+
+            topicAndTestListview.addFooterView(footerLinearLayout);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -380,15 +412,16 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            TextView textview = (TextView) view;
+                            //TextView textview = (TextView) view;
+                            String topic =(String)mArraylist.get(position);
 
                             if (check == 0) {
 
-                                openMainActivity(0, textview.getText().toString(), null);
+                                openMainActivity(0, topic, null);
                                 //  Toast.makeText(TopicActivity.this, " Selected " + textview.getText().toString(), Toast.LENGTH_SHORT).show();
 
                                 try {
-                                    Answers.getInstance().logCustom(new CustomEvent("Topic open").putCustomAttribute("topic", textview.getText().toString()));
+                                    Answers.getInstance().logCustom(new CustomEvent("Topic open").putCustomAttribute("topic", topic));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -510,13 +543,13 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            TextView textview = (TextView) view;
+                            String topic =(String)mArraylist.get(position);
                             if (check == 1) {
-                                openMainActivity(check, textview.getText().toString(), null);
+                                openMainActivity(check, topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
                                 try {
-                                    Answers.getInstance().logCustom(new CustomEvent("Daily Quiz open").putCustomAttribute("Date Name", textview.getText().toString()));
+                                    Answers.getInstance().logCustom(new CustomEvent("Daily Quiz open").putCustomAttribute("Date Name", topic));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -573,13 +606,13 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            TextView textview = (TextView) view;
+                            String topic =(String)mArraylist.get(position);
                             if (check == 1) {
-                                openMainActivity(check, textview.getText().toString(), null);
+                                openMainActivity(check, topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
                                 try {
-                                    Answers.getInstance().logCustom(new CustomEvent("Test series open").putCustomAttribute("test name", textview.getText().toString()));
+                                    Answers.getInstance().logCustom(new CustomEvent("Test series open").putCustomAttribute("test name", topic));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -633,13 +666,13 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            TextView textview = (TextView) view;
+                            String topic =(String)mArraylist.get(position);
                             if (check == 2) {
-                                openMainActivity(check, textview.getText().toString(), null);
+                                openMainActivity(check, topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
                                 try {
-                                    Answers.getInstance().logCustom(new CustomEvent("Verbal List open").putCustomAttribute("Verbal topic name", textview.getText().toString()));
+                                    Answers.getInstance().logCustom(new CustomEvent("Verbal List open").putCustomAttribute("Verbal topic name", topic));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -693,13 +726,13 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            TextView textview = (TextView) view;
+                            String topic =(String)mArraylist.get(position);
                             if (check == 1) {
-                                openMainActivity(check, textview.getText().toString(), null);
+                                openMainActivity(check,topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
                                 try {
-                                    Answers.getInstance().logCustom(new CustomEvent("Sample Paper list open").putCustomAttribute("Sample Paper", textview.getText().toString()));
+                                    Answers.getInstance().logCustom(new CustomEvent("Sample Paper list open").putCustomAttribute("Sample Paper", topic));
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

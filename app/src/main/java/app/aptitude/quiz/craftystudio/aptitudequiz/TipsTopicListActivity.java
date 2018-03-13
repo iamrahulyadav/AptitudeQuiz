@@ -111,14 +111,14 @@ public class TipsTopicListActivity extends AppCompatActivity {
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            TextView textview = (TextView) view;
+                            String topic =(String)mArraylist.get(position);
 
 
                             //opening TipsAndTricks Activity
-                            openTipsAndTrickActivty(textview.getText().toString());
+                            openTipsAndTrickActivty(topic);
 
                             try {
-                                Answers.getInstance().logCustom(new CustomEvent("Tips List open").putCustomAttribute("topic", textview.getText().toString()));
+                                Answers.getInstance().logCustom(new CustomEvent("Tips List open").putCustomAttribute("topic", topic));
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

@@ -261,6 +261,8 @@ public class MainActivity extends AppCompatActivity
             //if check == 2 get questions by verbal topic name
             topicName = getIntent().getExtras().getString("Topic");
             questionTopicName.setText(topicName);
+            showDialog("Loading...Please Wait");
+
 
             downloadQuestionByVerbalTopicName(topicName);
 
@@ -635,9 +637,12 @@ public class MainActivity extends AppCompatActivity
                     for (Questions questions : questionList) {
                         mQuestionsList.add(questions);
                     }
-                    initializeViewPager();
 
                     addNativeAds();
+
+
+                    initializeViewPager();
+
 
                     mPagerAdapter.notifyDataSetChanged();
 
@@ -686,9 +691,12 @@ public class MainActivity extends AppCompatActivity
                     for (Questions questions : questionList) {
                         mQuestionsList.add(questions);
                     }
+
+                    addNativeAds();
+
                     initializeViewPager();
 
-                    //   addNativeAds();
+
 
                     mPagerAdapter.notifyDataSetChanged();
 

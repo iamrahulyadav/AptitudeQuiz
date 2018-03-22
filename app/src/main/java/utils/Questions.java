@@ -18,6 +18,26 @@ public class Questions implements Serializable {
     private String optionC;
     private String optionD;
 
+    public boolean isPushNotification() {
+        return pushNotification;
+    }
+
+    public void setPushNotification(boolean pushNotification) {
+        this.pushNotification = pushNotification;
+    }
+
+    private boolean pushNotification;
+
+    public String getNotificationText() {
+        return notificationText;
+    }
+
+    public void setNotificationText(String notificationText) {
+        this.notificationText = notificationText;
+    }
+
+    private String notificationText;
+
 
     transient NativeAd nativeAd;
 
@@ -35,7 +55,7 @@ public class Questions implements Serializable {
     private String questionTestName;
     private String previousYearsName;
     private String questionUID;
-    private int questionTimer;
+     private int questionTimer;
 
 
     public int getQuestionTimer() {

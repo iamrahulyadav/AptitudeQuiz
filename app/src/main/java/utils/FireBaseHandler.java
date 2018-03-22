@@ -512,6 +512,122 @@ public class FireBaseHandler {
 
     }
 
+    public void uploadLogicalReasoningTopicName(final String topic, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("LogicalReasoning/Topic/");
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("LogicalReasoning/Topic/" + mDatabaseRef.push().getKey());
+
+        //DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Topic/");
+
+
+        mDatabaseRef1.setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onTopiclistener.onTopicDownLoad(topic, true);
+                onTopiclistener.onTopicUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onTopiclistener.onTopicUpload(false);
+                onTopiclistener.onTopicDownLoad(null, false);
+            }
+        });
+
+
+    }
+
+    public void uploadLogicalReasoningQuestion(final Questions questions, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("LogicalReasoning/Questions/");
+
+        questions.setQuestionUID(mDatabaseRef.push().getKey());
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("LogicalReasoning/Questions/" + questions.getQuestionUID());
+
+
+        mDatabaseRef1.setValue(questions).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onQuestionlistener.onQuestionDownLoad(questions, true);
+                onQuestionlistener.onQuestionUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onQuestionlistener.onQuestionUpload(false);
+                onQuestionlistener.onQuestionDownLoad(null, false);
+            }
+        });
+
+
+    }
+
+    public void uploadComputerTopicName(final String topic, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("ComputerKnowledge/Topic/");
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("ComputerKnowledge/Topic/" + mDatabaseRef.push().getKey());
+
+        //DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("Topic/");
+
+
+        mDatabaseRef1.setValue(topic).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onTopiclistener.onTopicDownLoad(topic, true);
+                onTopiclistener.onTopicUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onTopiclistener.onTopicUpload(false);
+                onTopiclistener.onTopicDownLoad(null, false);
+            }
+        });
+
+
+    }
+
+    public void uploadComputerQuestion(final Questions questions, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("ComputerKnowledge/Questions/");
+
+        questions.setQuestionUID(mDatabaseRef.push().getKey());
+
+        DatabaseReference mDatabaseRef1 = mFirebaseDatabase.getReference().child("ComputerKnowledge/Questions/" + questions.getQuestionUID());
+
+
+        mDatabaseRef1.setValue(questions).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                onQuestionlistener.onQuestionDownLoad(questions, true);
+                onQuestionlistener.onQuestionUpload(true);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Failed to Upload Story", e.getMessage());
+
+                onQuestionlistener.onQuestionUpload(false);
+                onQuestionlistener.onQuestionDownLoad(null, false);
+            }
+        });
+
+
+    }
+
     public void downloadDITopicList(int limit, final OnTopiclistener onTopiclistener) {
 
 

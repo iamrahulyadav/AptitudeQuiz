@@ -54,6 +54,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import io.fabric.sdk.android.Fabric;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import utils.AppRater;
 import utils.ClickListener;
@@ -175,7 +176,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
                 } else if (tab.getText() == "Sample Paper") {
                     downloadSamplePaperList();
-                   // Toast.makeText(TopicActivity.this, "Sample", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(TopicActivity.this, "Sample", Toast.LENGTH_SHORT).show();
                 } else if (tab.getText() == "Previous Paper") {
                     downloadTestList();
                     //Toast.makeText(TopicActivity.this, "Previous ", Toast.LENGTH_SHORT).show();
@@ -270,7 +271,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             adView.loadAd();
 
             linearLayout.addView(headerAdView);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -316,7 +317,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
             footerLinearLayout.addView(footerView);
 
             topicAndTestListview.addFooterView(footerLinearLayout);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -356,7 +357,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
                     //downloadSamplePaperList();
                     //downloadTestTab();
-                     return true;
+                    return true;
 
 
             }
@@ -413,7 +414,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                         @Override
                         public void onItemCLickListener(View view, int position) {
                             //TextView textview = (TextView) view;
-                            String topic =(String)mArraylist.get(position);
+                            String topic = (String) mArraylist.get(position);
 
                             if (check == 0) {
 
@@ -543,7 +544,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            String topic =(String)mArraylist.get(position);
+                            String topic = (String) mArraylist.get(position);
                             if (check == 1) {
                                 openMainActivity(check, topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
@@ -606,7 +607,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            String topic =(String)mArraylist.get(position);
+                            String topic = (String) mArraylist.get(position);
                             if (check == 1) {
                                 openMainActivity(check, topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
@@ -666,7 +667,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            String topic =(String)mArraylist.get(position);
+                            String topic = (String) mArraylist.get(position);
                             if (check == 2) {
                                 openMainActivity(check, topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
@@ -726,9 +727,9 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
                     adapter.setOnItemCLickListener(new ClickListener() {
                         @Override
                         public void onItemCLickListener(View view, int position) {
-                            String topic =(String)mArraylist.get(position);
+                            String topic = (String) mArraylist.get(position);
                             if (check == 1) {
-                                openMainActivity(check,topic, null);
+                                openMainActivity(check, topic, null);
                                 //  Toast.makeText(TopicActivity.this, "In Test " + " Selected " + textview.getText().toString() + " Postion is " + position, Toast.LENGTH_SHORT).show();
 
                                 try {
@@ -822,13 +823,77 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
 
         if (id == R.id.nav_test) {
-            Intent intent = new Intent(TopicActivity.this, RandomTestActivity.class);
-            startActivity(intent);
 
-         } else if (id == R.id.nav_bookmark) {
+            Questions questions = new Questions();
+            questions.setQuestionTopicName("heelo");
+            questions.setQuestionName("a");
+            questions.setOptionD("s");
+            questions.setOptionA("a");
+            questions.setOptionB("b");
+            questions.setOptionC("c");
+            questions.setQuestionExplaination("No Explaination Available");
+            questions.setCorrectAnswer("a");
+            questions.setNotificationText("Try out this Question Now!");
+            questions.setPushNotification(false);
 
-            Intent intent = new Intent(TopicActivity.this, BookmarkActivity.class);
-            startActivity(intent);
+            //random no generate
+            final int min = 1;
+            final int max = 1000;
+            Random random = new Random();
+            final int r = random.nextInt((max - min) + 1) + min;
+
+            questions.setRandomNumber(r);
+
+            FireBaseHandler fireBaseHandler = new FireBaseHandler();
+            fireBaseHandler.uploadComputerQuestion(questions, new FireBaseHandler.OnQuestionlistener() {
+                @Override
+                public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
+
+                }
+
+                @Override
+                public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
+
+                }
+
+                @Override
+                public void onQuestionUpload(boolean isSuccessful) {
+
+                    if (isSuccessful) {
+                        Toast.makeText(TopicActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+            //Intent intent = new Intent(TopicActivity.this, RandomTestActivity.class);
+            //startActivity(intent);
+
+        } else if (id == R.id.nav_bookmark) {
+
+            FireBaseHandler fireBaseHandler = new FireBaseHandler();
+            fireBaseHandler.uploadComputerTopicName("Series Problem", new FireBaseHandler.OnTopiclistener() {
+                @Override
+                public void onTopicDownLoad(String topic, boolean isSuccessful) {
+
+                }
+
+                @Override
+                public void onTopicListDownLoad(ArrayList<String> topicList, boolean isSuccessful) {
+
+                }
+
+                @Override
+                public void onTopicUpload(boolean isSuccessful) {
+
+                    if (isSuccessful) {
+                        Toast.makeText(TopicActivity.this, "uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+            //   Intent intent = new Intent(TopicActivity.this, BookmarkActivity.class);
+            // startActivity(intent);
 
         } else if (id == R.id.nav_formula) {
 

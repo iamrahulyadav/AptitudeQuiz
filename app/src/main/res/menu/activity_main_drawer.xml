@@ -4,21 +4,17 @@
 
     <group android:checkableBehavior="single">
 
+
         <item
-            android:id="@+id/nav_formula"
-            android:icon="@drawable/g3"
-            android:title="Formula and Tips" />
+            android:id="@+id/nav_test"
+            android:icon="@drawable/g4"
+            android:title="Random Test" />
 
 
         <item
             android:id="@+id/nav_bookmark"
             android:icon="@drawable/ic_action_bookmark"
             android:title="Bookmark Question" />
-
-        <item
-            android:id="@+id/nav_test"
-            android:icon="@drawable/g4"
-            android:title="Random Test" />
 
 
     </group>

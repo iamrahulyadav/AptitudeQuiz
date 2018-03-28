@@ -12,6 +12,123 @@
 
     <string name="title_activity_random_test">Aptitude Test</string>
     <string name="title_activity_tips_and_tricks">TipsAndTricksActivity</string>
-    <string name="title_activity_bookmark">BookmarkActivity</string>
+    <string name="title_activity_bookmark">Bookmarks</string>
     <string name="title_activity_tips_topic_list">Formula and Tips</string>
+    <string name="title_activity_menu">Aptitude Master</string>
+    <string name="title_activity_study_data">Study Data</string>
+
+
+    <string-array name="computer_maindisplay_topic_list">
+        <item>Basic Computer</item>
+        <item>Ms PowerPoint</item>
+        <item>Ms Excel</item>
+    </string-array>
+
+    <string-array name="computer_sub_basic_computer_list">
+        <item>INTRODUCTION</item>
+        <item>COMPONENTS</item>
+        <item>HARDWARE AND SOFTWARE</item>
+        <item>INPUT AND OUTPUT DEVICES</item>
+        <item>OPERATING SYSTEM</item>
+        <item>TYPES OF COMPUTER</item>
+        <item>MEMORY</item>
+        <item>INTERNET TERMS</item>
+
+    </string-array>
+
+    <string-array name="computer_sub_msexcel_list">
+        <item>MS EXCEL BASIC</item>
+        <item>GETTING STARTED</item>
+        <item>INSERT DATA</item>
+        <item>ROWS AND COLUMN BASICS</item>
+        <item>WORKSHEET OPTIONS</item>
+        <item>FORMATTING CELL</item>
+        <item>FORMULA AND FUNCTION</item>
+        <item>CHARTS</item>
+        <item>DATA FILTERING</item>
+        <item>DATA SORTING</item>
+        <item>DATA VALIDATION</item>
+    </string-array>
+
+    <string-array name="computer_sub_mspp_list">
+        <item>POWERPOINT BASICS</item>
+        <item>CREATE PRESENTATION</item>
+        <item>ADDING TEXT</item>
+        <item>SETTING BACKGROUND</item>
+        <item>VIEW IN PRESENTATION</item>
+        <item>ADDING HEADER AND FOOTER</item>
+        <item>WORKING WITH OUTLINES</item>
+    </string-array>
+
+    <string-array name="englishgrammar_main_topic_list">
+        <item>Noun</item>
+        <item>Punctuation</item>
+        <item>Speech</item>
+        <item>Adjective</item>
+        <item>Adverb</item>
+        <item>Conjuction</item>
+        <item>Determiner</item>
+        <item>Prepositions</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_noun_list">
+        <item>COLLECTIVE NOUN</item>
+        <item>COUNTABLE AND UNCOUNTABLE NOUN</item>
+        <item>POSSESSIVE FORM OF NOUN</item>
+        <item>SINGULAR AND PLURAL NOUN</item>
+        <item>TYPES OF NOUN</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_preposition_list">
+        <item>INTRODUCTION</item>
+        <item>POSITION OF PREPOSITION</item>
+        <item>SIMPLE AND COMPOUND PREPOSITION</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_punctuation_list">
+        <item>HYPHENS AND DASHES</item>
+        <item>THE APOSTROPHE</item>
+        <item>THE COLON AND SEMICOLON</item>
+        <item>THE COMMA</item>
+        <item>THE PERIOD, FULL STOP OR POINT</item>
+        <item>THE QUESTION MARK</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_speech_list">
+        <item>DIRECT SPEECH</item>
+        <item>INDIRECT SPEECH</item>
+        <item>CHANGING DIRECT TO INDIRECT</item>
+        <item>REPORTING QUESTIONS</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_determiner_list">
+        <item>INDEFINITE ARTICLE</item>
+        <item>PRE DETERMINERS</item>
+        <item>THE DEFINITE ARTICLE</item>
+        <item>ZERO ARTICLE</item>
+        <item>ARTICLE BEFORE COUNTABLE AND UNCOUNTABLE NOUN</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_conjuction_list">
+        <item>CONNECTING CONJUCTIONS</item>
+        <item>COORDINATING CONJUCTIONS</item>
+        <item>CORELATIVE CONJUCTIONS</item>
+        <item>SUBORDINATING CONJUCTIONS</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_adverb_list">
+        <item>INTRODUCTION</item>
+        <item>POSITION OF ADVERBS</item>
+        <item>FORMING ADVERB</item>
+        <item>TYPES OF ADVERB</item>
+    </string-array>
+
+    <string-array name="englishgrammar_sub_adjective_list">
+        <item>INTRODUCTION</item>
+        <item>TYPES OF ADJECTIVES</item>
+        <item>ATTRIBUTIVE AND PREDICATIVE</item>
+        <item>COMPARATIVE AND SUPERLATIVE</item>
+        <item>PARTICIPAL ADJECTIVES</item>
+    </string-array>
+
 </resources>

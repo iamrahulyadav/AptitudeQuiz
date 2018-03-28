@@ -262,11 +262,23 @@ public class MainActivity extends AppCompatActivity
             topicName = getIntent().getExtras().getString("Topic");
             questionTopicName.setText(topicName);
             showDialog("Loading...Please Wait");
-
-
             downloadQuestionByVerbalTopicName(topicName);
 
 
+        } else if (check == 3) {
+            //if check == 3 get questions by Logical topic name
+
+            topicName = getIntent().getExtras().getString("Topic");
+            questionTopicName.setText(topicName);
+            showDialog("Loading...Please Wait");
+            downloadLogicalReasoningQuestion(topicName);
+        } else if (check == 4) {
+            //if check == 4 get questions by Computer topic name
+
+            topicName = getIntent().getExtras().getString("Topic");
+            questionTopicName.setText(topicName);
+            showDialog("Loading...Please Wait");
+            downloadComputerKnowledgeQuestion(topicName);
         }
 
 
@@ -697,6 +709,113 @@ public class MainActivity extends AppCompatActivity
                     initializeViewPager();
 
 
+                    mPagerAdapter.notifyDataSetChanged();
+
+                    //adding Questions in RIght Navigation
+                    onAddingQuestionName(mQuestionsList);
+
+                    timer.start();
+
+                }
+
+                hideDialog();
+
+            }
+
+            @Override
+            public void onQuestionUpload(boolean isSuccessful) {
+
+
+            }
+
+        });
+
+
+    }
+
+    /* Download questions according to LR TOPIC name*/
+    public void downloadLogicalReasoningQuestion(String LogicalTopicName) {
+
+        fireBaseHandler = new FireBaseHandler();
+
+        isMoreQuestionAvailable = false;
+
+        fireBaseHandler.downloadLogicalQuestionList(30, LogicalTopicName, new FireBaseHandler.OnQuestionlistener() {
+            @Override
+            public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
+
+                hideDialog();
+            }
+
+            @Override
+            public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
+
+                if (isSuccessful) {
+
+                    mQuestionsList.clear();
+
+                    for (Questions questions : questionList) {
+                        mQuestionsList.add(questions);
+                    }
+
+                    addNativeAds();
+
+                    initializeViewPager();
+
+
+                    mPagerAdapter.notifyDataSetChanged();
+
+                    //adding Questions in RIght Navigation
+                    onAddingQuestionName(mQuestionsList);
+
+                    timer.start();
+
+                }
+
+                hideDialog();
+
+            }
+
+            @Override
+            public void onQuestionUpload(boolean isSuccessful) {
+
+
+            }
+
+        });
+
+
+    }
+
+    /* Download questions according to COmputer TOPIC name*/
+    public void downloadComputerKnowledgeQuestion(String LogicalTopicName) {
+
+        fireBaseHandler = new FireBaseHandler();
+
+        isMoreQuestionAvailable = false;
+
+        fireBaseHandler.downloadComputerQuestionList(30, LogicalTopicName, new FireBaseHandler.OnQuestionlistener() {
+            @Override
+            public void onQuestionDownLoad(Questions questions, boolean isSuccessful) {
+
+                hideDialog();
+            }
+
+            @Override
+            public void onQuestionListDownLoad(ArrayList<Questions> questionList, boolean isSuccessful) {
+
+                if (isSuccessful) {
+
+                    mQuestionsList.clear();
+
+                    for (Questions questions : questionList) {
+                        mQuestionsList.add(questions);
+                    }
+
+                    addNativeAds();
+
+                    initializeViewPager();
+
 
                     mPagerAdapter.notifyDataSetChanged();
 
@@ -1067,7 +1186,7 @@ public class MainActivity extends AppCompatActivity
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
                 "\nCan you Solve this question? \n\n " + questions.getQuestionName() + "\n\n" + "1. " + questions.getOptionA()
                         + "\n2. " + questions.getOptionB() + "\n3. " + questions.getOptionC() + "\n4. " + questions.getOptionD() + "\n\n See the Explaination here\n " + shortUrl);
-        startActivity(Intent.createChooser(sharingIntent, "Share Aptitude Question via"));
+        startActivity(Intent.createChooser(sharingIntent, "Share Question via"));
         hideDialog();
 
         try {
@@ -1078,6 +1197,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
 
 }
 

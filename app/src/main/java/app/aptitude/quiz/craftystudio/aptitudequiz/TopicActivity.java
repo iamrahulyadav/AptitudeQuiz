@@ -912,7 +912,7 @@ public class TopicActivity extends AppCompatActivity implements NavigationView.O
 
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
                     " " + "\n\n https://goo.gl/Q7sjZi " + "\n Aptitude Quiz app \n Download App Now");
-            startActivity(Intent.createChooser(sharingIntent, "Share Aptitude App via"));
+            startActivity(Intent.createChooser(sharingIntent, "Share App via"));
 
 
         } else if (id == R.id.nav_rate) {

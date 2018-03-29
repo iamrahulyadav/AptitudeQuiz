@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
@@ -26,7 +27,8 @@ import utils.FireBaseHandler;
 
 public class TipsAndTricksActivity extends AppCompatActivity {
 
-    String mTopicName;
+    String mSubTopicName, mMainTopicName;
+    int msubjectCode;
     WebView webView;
 
     ProgressDialog progressDialog;
@@ -50,23 +52,35 @@ public class TipsAndTricksActivity extends AppCompatActivity {
             }
         });
 
-        mTopicName = getIntent().getStringExtra("TopicName");
+        mSubTopicName = getIntent().getStringExtra("SubTopicName");
+        mMainTopicName = getIntent().getStringExtra("MainTopicName");
+        msubjectCode = getIntent().getIntExtra("SubjectCode", 0);
 
-        toolbar.setTitle(mTopicName);
+        toolbar.setTitle(mSubTopicName);
         setSupportActionBar(toolbar);
 
-        showDialog();
 
         //download data from database
 
-        if (mTopicName.equalsIgnoreCase("H.C.F and L.C.M"))
-            mTopicName = "HCF and LCM";
+        if (mSubTopicName.equalsIgnoreCase("H.C.F and L.C.M"))
+            mSubTopicName = "HCF and LCM";
 
-        downloadTips(mTopicName);
+
+        switch (msubjectCode) {
+            case 0:
+                downloadAptitudeData(mSubTopicName);
+                break;
+            case 1:
+                downloadEnglishGrammarData(mMainTopicName, mSubTopicName);
+                break;
+            case 2:
+                downloadComputerData(mMainTopicName, mSubTopicName);
+                break;
+        }
 
 
         try {
-            Answers.getInstance().logCustom(new CustomEvent("Tips and Tricks").putCustomAttribute("Topic", mTopicName));
+            Answers.getInstance().logCustom(new CustomEvent("Tips and Tricks").putCustomAttribute("Topic", mSubTopicName));
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             initializeBottomNativeAds();
             initializeTopNativeAds();
@@ -83,11 +97,14 @@ public class TipsAndTricksActivity extends AppCompatActivity {
         return true;
     }
 
-    private void downloadTips(String mTopicName) {
+    private void downloadAptitudeData(String mTopicName) {
+        showDialog();
         FireBaseHandler fireBaseHandler = new FireBaseHandler();
-        fireBaseHandler.downloadTipsAndTricks(mTopicName, new FireBaseHandler.OnTipsAndTrickslistener() {
+        fireBaseHandler.downloadAptitudeTipsAndTricks(mTopicName, new FireBaseHandler.OnTipsAndTrickslistener() {
             @Override
             public void onTipsDownLoad(String tips, boolean isSuccessful) {
+                hideDialog();
+
                 if (isSuccessful) {
                     if (tips != null) {
                         webView = (WebView) findViewById(R.id.displayText_TipsAndTricks_Webview);
@@ -99,10 +116,56 @@ public class TipsAndTricksActivity extends AppCompatActivity {
 
                     }
                 }
-                hideDialog();
             }
         });
 
+    }
+
+    private void downloadComputerData(final String mMainTopicName, final String mSubTopicName) {
+        showDialog();
+        FireBaseHandler fireBaseHandler = new FireBaseHandler();
+        fireBaseHandler.downloadComputerStudyData(mMainTopicName, mSubTopicName, new FireBaseHandler.OnTipsAndTrickslistener() {
+            @Override
+            public void onTipsDownLoad(String computerStudyData, boolean isSuccessful) {
+                hideDialog();
+                if (isSuccessful) {
+                    if (computerStudyData != null) {
+                        webView = (WebView) findViewById(R.id.displayText_TipsAndTricks_Webview);
+                        webView.loadDataWithBaseURL("", computerStudyData, "text/html", "UTF-8", "");
+
+                    } else {
+                        webView = (WebView) findViewById(R.id.displayText_TipsAndTricks_Webview);
+                        webView.loadDataWithBaseURL("", "Data not Available", "text/html", "UTF-8", "");
+
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    private void downloadEnglishGrammarData(String mMainTopicName, String mSubTopicName) {
+        showDialog();
+        FireBaseHandler fireBaseHandler = new FireBaseHandler();
+        fireBaseHandler.downloadEnglishGrammarStudyData(mMainTopicName, mSubTopicName, new FireBaseHandler.OnTipsAndTrickslistener() {
+            @Override
+            public void onTipsDownLoad(String englishGrammarStudyData, boolean isSuccessful) {
+                hideDialog();
+                if (isSuccessful) {
+                    if (englishGrammarStudyData != null) {
+                        webView = (WebView) findViewById(R.id.displayText_TipsAndTricks_Webview);
+                        webView.loadDataWithBaseURL("", englishGrammarStudyData, "text/html", "UTF-8", "");
+
+                    } else {
+                        webView = (WebView) findViewById(R.id.displayText_TipsAndTricks_Webview);
+                        webView.loadDataWithBaseURL("", "Data not Available", "text/html", "UTF-8", "");
+
+                    }
+                }
+
+            }
+        });
     }
 
     void showDialog() {
@@ -254,7 +317,6 @@ public class TipsAndTricksActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
-
 
 
 }

@@ -77,7 +77,7 @@ public class BookmarkActivity extends AppCompatActivity {
 
         if (mQuestionsList.size() != 0) {
             questionTopicName.setText(mQuestionsList.get(mPager.getCurrentItem()).getQuestionTopicName());
-        }else {
+        } else {
             questionTopicName.setText("No Bookmark");
         }
 
@@ -276,7 +276,7 @@ public class BookmarkActivity extends AppCompatActivity {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,
                 "\nCan you Solve this question? \n\n " + questions.getQuestionName() + "\n\n" + "1. " + questions.getOptionA()
                         + "\n2. " + questions.getOptionB() + "\n3. " + questions.getOptionC() + "\n4. " + questions.getOptionD() + "\n\n See the Explaination here\n " + shortUrl);
-        startActivity(Intent.createChooser(sharingIntent, "Share Aptitude Question via"));
+        startActivity(Intent.createChooser(sharingIntent, "Share Question via"));
         hideDialog();
 
         try {

@@ -194,17 +194,18 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
                 //  Log.d("seconds elapsed: ", (totalSeconds * 1000 - millisUntilFinished) / 1000 + "");
 
                 int seconds = 0, minutes = 0;
-                questions = mQuestionsList.get(mPager.getCurrentItem());
+                if (!mQuestionsList.isEmpty()) {
+                    questions = mQuestionsList.get(mPager.getCurrentItem());
+                }
 
 
                 if (questions.getUserAnswer() == null) {
                     questions.setQuestionTimer(questions.getQuestionTimer() + 1);
 
                 } else {
-
-
                     //timeElapsed = seconds;
                 }
+
                 seconds = questions.getQuestionTimer();
 
                 minutes = seconds / 60;
@@ -320,6 +321,7 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
                 // User clicked OK button
                 dialog.dismiss();
                 countDownTimer.cancel();
+                mQuestionsNameList.clear();
                 mQuestionsList.clear();
                 downloadRandomQuestionList();
                 initializeViewPager();
@@ -328,7 +330,7 @@ public class RandomTestActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        builder.setNegativeButton("Not Yet!", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Not Now!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();

@@ -18,11 +18,7 @@
             android:name=".TopicActivity"
             android:label="@string/title_activity_topic"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RandomTestActivity"
@@ -50,6 +46,20 @@
         <activity
             android:name=".TipsTopicListActivity"
             android:label="@string/title_activity_tips_topic_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MenuActivity"
+            android:label="@string/title_activity_menu"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".StudyDataActivity"
+            android:label="@string/title_activity_study_data"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

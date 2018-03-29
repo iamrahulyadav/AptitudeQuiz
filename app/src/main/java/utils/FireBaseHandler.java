@@ -541,6 +541,49 @@ public class FireBaseHandler {
 
     }
 
+    public void downloadLogicalReasoningTopicList(int limit, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("LogicalReasoning/Topic/");
+
+        Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> verbalTopicArrayList = new ArrayList<String>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String topic = snapshot.getValue(String.class);
+                    if (topic != null) {
+                        verbalTopicArrayList.add(topic);
+
+                    }
+                }
+
+                Collections.reverse(verbalTopicArrayList);
+
+                onTopiclistener.onTopicListDownLoad(verbalTopicArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTopiclistener.onTopicListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+
     public void uploadLogicalReasoningQuestion(final Questions questions, final OnQuestionlistener onQuestionlistener) {
 
 
@@ -569,6 +612,52 @@ public class FireBaseHandler {
 
 
     }
+
+    public void downloadLogicalQuestionList(int limit, String topicName, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("LogicalReasoning/Questions/");
+
+        Query myref2 = mDatabaseRef.orderByChild("questionTopicName").equalTo(topicName).limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Questions> questionsArrayList = new ArrayList<Questions>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    Questions questions = snapshot.getValue(Questions.class);
+                    if (questions != null) {
+
+                        questions.setQuestionUID(snapshot.getKey());
+
+                    }
+                    questionsArrayList.add(questions);
+                }
+
+                Collections.reverse(questionsArrayList);
+
+                onQuestionlistener.onQuestionListDownLoad(questionsArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onQuestionlistener.onQuestionListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
 
     public void uploadComputerTopicName(final String topic, final OnTopiclistener onTopiclistener) {
 
@@ -599,6 +688,48 @@ public class FireBaseHandler {
 
     }
 
+    public void downloadComputerTopicList(int limit, final OnTopiclistener onTopiclistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("ComputerKnowledge/Topic/");
+
+        Query myref2 = mDatabaseRef.orderByKey().limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> verbalTopicArrayList = new ArrayList<String>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    String topic = snapshot.getValue(String.class);
+                    if (topic != null) {
+                        verbalTopicArrayList.add(topic);
+
+                    }
+                }
+
+                // Collections.reverse(verbalTopicArrayList);
+
+                onTopiclistener.onTopicListDownLoad(verbalTopicArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTopiclistener.onTopicListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
     public void uploadComputerQuestion(final Questions questions, final OnQuestionlistener onQuestionlistener) {
 
 
@@ -624,6 +755,51 @@ public class FireBaseHandler {
                 onQuestionlistener.onQuestionDownLoad(null, false);
             }
         });
+
+
+    }
+
+    public void downloadComputerQuestionList(int limit, String topicName, final OnQuestionlistener onQuestionlistener) {
+
+
+        mDatabaseRef = mFirebaseDatabase.getReference().child("ComputerKnowledge/Questions/");
+
+        Query myref2 = mDatabaseRef.orderByChild("questionTopicName").equalTo(topicName).limitToLast(limit);
+
+        databaseReferenceArrayList.add(myref2);
+
+
+        ValueEventListener valueEventListener = myref2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Questions> questionsArrayList = new ArrayList<Questions>();
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    Questions questions = snapshot.getValue(Questions.class);
+                    if (questions != null) {
+
+                        questions.setQuestionUID(snapshot.getKey());
+
+                    }
+                    questionsArrayList.add(questions);
+                }
+
+                Collections.reverse(questionsArrayList);
+
+                onQuestionlistener.onQuestionListDownLoad(questionsArrayList, true);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onQuestionlistener.onQuestionListDownLoad(null, false);
+
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
 
 
     }
@@ -800,7 +976,7 @@ public class FireBaseHandler {
 
     }
 
-    public void downloadTipsAndTricks(String topicName, final OnTipsAndTrickslistener onTipsAndTrickslistener) {
+    public void downloadAptitudeTipsAndTricks(String topicName, final OnTipsAndTrickslistener onTipsAndTrickslistener) {
 
 
         DatabaseReference myRef = mFirebaseDatabase.getReference().child("TipsAndTricks/" + topicName);
@@ -814,6 +990,62 @@ public class FireBaseHandler {
 
 
                 onTipsAndTrickslistener.onTipsDownLoad(tipsData, true);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTipsAndTrickslistener.onTipsDownLoad(null, false);
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+    public void downloadComputerStudyData(String mMainTopicName, String mSubTopicName, final OnTipsAndTrickslistener onTipsAndTrickslistener) {
+
+
+        DatabaseReference myRef = mFirebaseDatabase.getReference().child("ComputerKnowledge/ComputerPracticeData/" + mMainTopicName + "/" + mSubTopicName);
+        databaseReferenceArrayList.add(myRef);
+
+        ValueEventListener valueEventListener = myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String computerStudyData = dataSnapshot.getValue(String.class);
+
+
+                onTipsAndTrickslistener.onTipsDownLoad(computerStudyData, true);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                onTipsAndTrickslistener.onTipsDownLoad(null, false);
+            }
+        });
+
+        valueEventListenerArrayList.add(valueEventListener);
+
+
+    }
+
+    public void downloadEnglishGrammarStudyData(String mMainTopicName, String mSubTopicName, final OnTipsAndTrickslistener onTipsAndTrickslistener) {
+
+
+        DatabaseReference myRef = mFirebaseDatabase.getReference().child("EnglishGrammarPracticeData/" + mMainTopicName + "/" + mSubTopicName);
+        databaseReferenceArrayList.add(myRef);
+
+        ValueEventListener valueEventListener = myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String computerStudyData = dataSnapshot.getValue(String.class);
+
+
+                onTipsAndTrickslistener.onTipsDownLoad(computerStudyData, true);
 
             }
 

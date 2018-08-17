@@ -18,6 +18,12 @@ public class Questions implements Serializable {
     private String optionC;
     private String optionD;
 
+
+    private String notificationText;
+
+
+    transient NativeAd nativeAd;
+
     public boolean isPushNotification() {
         return pushNotification;
     }
@@ -36,10 +42,6 @@ public class Questions implements Serializable {
         this.notificationText = notificationText;
     }
 
-    private String notificationText;
-
-
-    transient NativeAd nativeAd;
 
     public int getRandomNumber() {
         return randomNumber;
@@ -55,7 +57,7 @@ public class Questions implements Serializable {
     private String questionTestName;
     private String previousYearsName;
     private String questionUID;
-     private int questionTimer;
+    private int questionTimer;
 
 
     public int getQuestionTimer() {
